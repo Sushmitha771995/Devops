@@ -4,7 +4,7 @@
 #okay lets begin
 
 echo "let's begin variables demos"
-a = sushmita
+a=sushmita
 
 echo "${a}"
 echo $a
