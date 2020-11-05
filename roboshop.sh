@@ -1,4 +1,4 @@
-!bin/bash
+#!bin/bash
 #This is coding for the roboshop
 
 service=$1
