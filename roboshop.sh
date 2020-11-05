@@ -16,6 +16,10 @@ cart)
 echo -e "\e[1;4;35msetting up cart\e[0m"
 echo 'installing mongodb'
 ;;
+*)
+echo "not listed in service"
+exit 1
+;;
 esac
 
 
