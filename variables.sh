@@ -10,3 +10,6 @@ echo "${a}"
 echo $a
 echo $aodanapu
 echo ${a}Bodanapu
+# not try to use dynamic substiution
+a = $date
+echo today dat is $a
