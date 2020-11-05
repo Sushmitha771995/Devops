@@ -10,13 +10,13 @@ systtemctl()
   systemctl start nginx
   systemctl enable nginx
 }
-heading()
+heading($1)
 {
  echo -e "\e[1;4;35msetting up $1\e[0m"
 }
 case $service in
 frontend)
- heading $1
+ heading
 #echo -e "\e[1;4;35msetting up $1\e[0m"
 echo "installing nginx"
 yum install nginx -y >> /dev/null
@@ -37,7 +37,7 @@ catalogue)
 echo "installing nodejs"
 ;;
 cart)
-  heading $1
+  heading
 #echo -e "\e[1;4;35msetting up cart\e[0m"
 echo 'installing mongodb'
 ;;
