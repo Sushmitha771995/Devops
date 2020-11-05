@@ -5,6 +5,16 @@
 
 abc()
 { echo this is a function abc
+ read -p "enter your name" name
+ case $name in
+ sushmitha)
+   echo hello $name
+   ;;
+ navyatha)
+   echo hey $name
+   ;;
+ esac
+
 }
 abc
 
