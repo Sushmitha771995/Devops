@@ -16,7 +16,7 @@ heading()
 }
 case $service in
 frontend)
- heading
+ heading $1
 #echo -e "\e[1;4;35msetting up $1\e[0m"
 echo "installing nginx"
 yum install nginx -y >> /dev/null
