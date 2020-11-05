@@ -37,7 +37,7 @@ catalogue)
 echo "installing nodejs"
 ;;
 cart)
-  heading
+  heading $1
 #echo -e "\e[1;4;35msetting up cart\e[0m"
 echo 'installing mongodb'
 ;;
