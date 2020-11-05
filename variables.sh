@@ -9,4 +9,4 @@ a = sushmita
 echo "${a}"
 echo $a
 echo $aodanapu
-echo ${a]}Bodanapu
+echo ${a}Bodanapu
