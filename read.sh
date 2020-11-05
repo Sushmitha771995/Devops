@@ -10,3 +10,10 @@ echo -e "\e[35mso what is magata let me \e[36mtryyyyyy\e[0m"
 read -p "enter your name "  name
 echo your name is $name
 
+#input arguments thruough special variables
+#special variables $* $@ $0-$n $#
+a=$1
+b=$2
+c=$@
+d=$#
+e=$0
