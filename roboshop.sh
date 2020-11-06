@@ -1,39 +1,42 @@
 #!bin/bash
+
 #This is coding for the roboshop
 
 service=$1
-installation=$2
-
+LOG_FILE=/tmp/roboshop.log
 
 heading()
 {
  echo -e "\e[1;4;35msetting up $1\e[0m"
 }
+status_check()
+{
+ case $1 in
+0)
+  echo -e "\t\t\t\\t \e[32mSUCCESS\e[0m"
+  ;;
+*)
+  echo -e "\t\t\t\t\ \e[31mFAILURE\e[0m"
+  echo "Refer $LOG_FILE for more details"
+  ;;
+esac
+}
 
 heading
 case $service in
 frontend)
-echo "installing nginx"
-yum install nginx -y &>>logfile
-case $? in
-0)
-  echo -e "\e[32mSUCCESS\e[0m"
-  ;;
-*)
-  echo -e "\e[31mFAILURE\e[0m"
-    ;;
-esac
-
-#systemctl enable nginx >>/dev/null
-#systemctl start nginx
-curl -s -L -o /tmp/frontend.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/a781da9c-8fca-4605-8928-53c962282b74/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true"
+echo -n "installing nginx"
+yum install nginx -y &>>$LOG_FILE
+status_check $?
+curl -s -L -o /tmp/frontend.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/a781da9c-8fca-4605-8928-53c962282b74/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" >>$LOG_FILE
+status_check $?
 cd /usr/share/nginx/html
-rm -rf *
-unzip /tmp/frontend.zip
-mv static/* .
-rm -rf static README.md
-mv localhost.conf /etc/nginx/default.d/roboshop.conf
-systemctl restart nginx
+#rm -rf *
+#unzip /tmp/frontend.zip
+#mv static/* .
+#rm -rf static README.md
+#mv localhost.conf /etc/nginx/default.d/roboshop.conf
+#systemctl restart nginx
 ;;
 catalogue)
   heading
