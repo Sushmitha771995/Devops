@@ -35,14 +35,14 @@ echo "Clearing old docs"
 cd /usr/share/nginx/html
 rm -rf *
 status_check $?
-echo "extacting frontend"
+echo -n "extacting frontend"
 unzip /tmp/frontend.zip &>>$LOG_FILE
 status_check $?
 
 mv static/* .
 rm -rf static README.md
 
-echo "Update ngnx configuration"
+echo -n "Update ngnx configuration"
 
 
 mv localhost.conf /etc/nginx/default.d/roboshop.conf
@@ -55,15 +55,15 @@ systemctl restart nginx &>>$LOG_FILE
 catalogue)
   heading
 #echo -e "\e[1;4;35msentting up $1\e[0m"
-echo "installing nodejs"
+echo -n "installing nodejs"
 ;;
 cart)
   heading
 #echo -e "\e[1;4;35msetting up cart\e[0m"
-echo 'installing mongodb'
+echo -n 'installing mongodb'
 ;;
 *)
-echo "not listed in service"
+echo -n "not listed in service"
 exit 1
 ;;
 esac
