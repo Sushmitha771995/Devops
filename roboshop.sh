@@ -139,6 +139,7 @@ systemctl start catalogue &>>$LOG_FILE
 status_check $?
 systemctl enable catalogue &>>$LOG_FILE
 
+;;
 *)
 echo -n "not listed in service"
 exit 1
