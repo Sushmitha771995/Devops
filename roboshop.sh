@@ -16,7 +16,7 @@ status_check()
   echo -e "\t\t\t\\t \e[32mSUCCESS\e[0m"
   ;;
 *)
-  echo -e "\t\t\t\t\ \e[31mFAILURE\e[0m"
+  echo -e "\t\t\t\t  \e[31mFAILURE\e[0m"
   echo "Refer $LOG_FILE for more details"
   ;;
 esac
@@ -56,16 +56,16 @@ systemctl restart nginx &>>$LOG_FILE
 mongodb)
 echo -n "updating mongo repos "
 
-echo '[mongodb-org-4.2]
+echo '[mongodb-org-4.4]
 name=MongoDB Repository
-baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.4/x86_64/
 gpgcheck=1
 enabled=1
-gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc' >/etc/yum.repos.d/mongodb.repo &>>$LOG_FILE
+gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc' >/etc/yum.repos.d/mongodb.repo &>>$LOG_FILE
 status_check $?
 
 echo -n "instaling mongo\t\t"
-yum install -y mongodb-org &>>$LOG_FILE
+sudo yum install -y mongodb-org &>>$LOG_FILE
 status_check $?
 
 echo -n "changing IP address "
