@@ -85,15 +85,15 @@ status_check $?
 
 echo -n "extractig confifuration files"
 cd /tmp &>>$LOG_FILE
-unzip mongodb.zip &>>$LOG_FILE
+unzip -o mongodb.zip &>>$LOG_FILE
 status_check $?
 
 echo -n "load catalogue app schema"
-mongo < catalogue.js  &>>LOG_FILE
+mongo < catalogue.js  &>>$LOG_FILE
 status_check $?
 
 echo -n "load user app schema "
-mongo < users.js &>>LOG_FILE
+mongo < users.js &>>$LOG_FILE
 status_check $?
 ;;
 
