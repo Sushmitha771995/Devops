@@ -56,13 +56,12 @@ systemctl restart nginx &>>$LOG_FILE
 mongodb)
 echo -n "updating mongo repos "
 
-echo '[mongodb-org-4.2]
-name=MongoDB Repository
-baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
+ echo '[mongodb-org-4.2]
+name=MongoDB Repository baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
 gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc' >/etc/yum.repos.d/mongodb.repo >/etc/yum.repos.d/mongodb.repo &>>$LOG_FILE
-status_check $?
+ status_check $?
 
 echo -n "instaling mongo\t\t"
 sudo yum install -y mongodb-org &>>$LOG_FILE
