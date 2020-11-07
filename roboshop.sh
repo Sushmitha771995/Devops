@@ -138,8 +138,23 @@ status_check $?
 systemctl start catalogue &>>$LOG_FILE
 status_check $?
 systemctl enable catalogue &>>$LOG_FILE
-
 ;;
+
+user)
+  echo -n "Install packages"
+  yum install epel-release yum-utils -y &>>$LOG_FILE
+  yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y &>>$LOG_FILE
+  yum-config-manager --enable remi &>>$LOG_FILE
+  yum install redis -y &>>$LOG_FILE
+  status_check $?
+  echo -n "changing ip confifuration"
+  sed -i -e "s/127.0.0.1/0.0.0.0/" /etc/redis.conf  &>>$LOG_FILE
+  status_check $?
+
+  systemctl enable redis
+  systemctl start redis
+
+
 *)
 echo -n "not listed in service"
 exit 1
