@@ -21,7 +21,7 @@ status_check()
   ;;
 esac
 }
-heading
+heading $service
 
 case $service in
 frontend)
@@ -54,7 +54,6 @@ systemctl restart nginx &>>$LOG_FILE
 ;;
 
 mongodb)
-heading
 echo -n "updating mongo repos "
 
 echo '[mongodb-org-4.2]
@@ -96,6 +95,8 @@ echo -n "load user app schema "
 mongo < users.js &>>$LOG_FILE
 status_check $?
 ;;
+
+catalogue)
 
 *)
 echo -n "not listed in service"
