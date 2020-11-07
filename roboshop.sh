@@ -140,7 +140,7 @@ status_check $?
 systemctl enable catalogue &>>$LOG_FILE
 ;;
 
-user)
+redis)
   echo -n "Install packages"
   yum install epel-release yum-utils -y &>>$LOG_FILE
   yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y &>>$LOG_FILE
