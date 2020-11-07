@@ -50,7 +50,7 @@ mv localhost.conf /etc/nginx/default.d/roboshop.conf
 status_check $?
 
 systemctl enable nginx &>>$LOG_FILE
-systemctl restart nginx &>>$LOG_FILE
+systemctl start nginx &>>$LOG_FILE
 ;;
 
 mongodb)
