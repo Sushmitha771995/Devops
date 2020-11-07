@@ -151,8 +151,10 @@ redis)
   sed -i -e "s/127.0.0.1/0.0.0.0/" /etc/redis.conf  &>>$LOG_FILE
   status_check $?
 
-  systemctl enable redis &>>$LOG_FIL
-  systemctl start redis &>>$LOG_FIL
+  systemctl enable redis
+  status_check $?
+  systemctl start redis
+  status_check $?
 ;;
 
 *)
