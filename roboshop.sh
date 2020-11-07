@@ -123,8 +123,10 @@ echo -n "extracting catalogue file"
  status_check $?
 
 echo -n "Download dependent packages"
-npm install
+npm install &>>$LOG_FILE
 status_check $?
+
+chown robosho:roboshop /home/roboshop -R
 
 echo -n "Start system service"
 mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
