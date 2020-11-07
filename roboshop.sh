@@ -191,8 +191,9 @@ status_check $?
 chown roboshop:roboshop /home/roboshop/user -R
 
 echo -n "Start system service"
-#mv /home/roboshop/user/systemd.service /etc/systemd/system/user.service &>>$LOG_FILE
-#sed -i -e "s/MONGO_DNSNAME/redis-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
+mv /home/roboshop/user/systemd.service /etc/systemd/system/user.service &>>$LOG_FILE
+sed -i -e "s/MONGO_ENDPOINT/mongodb-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
+sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
 
