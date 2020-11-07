@@ -103,14 +103,14 @@ catalogue)
 
   echo -n "adding user"
   useradd roboshop &>>$LOG_FILE
-  status_check $?
+
   case $? in
-  9|0) exit 0
+  9|0) status_check 0
     ;;
-  *) exit $?
+  *) status_check $?
     ;;
     esac
-  status_check $?
+
 
   status_check $?
 
