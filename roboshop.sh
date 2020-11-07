@@ -84,7 +84,7 @@ curl -s -L -o /tmp/mongodb.zip "https://dev.azure.com/DevOps-Batches/ce99914a-0f
 status_check $?
 
 echo -n "extractig confifuration files"
-cd /tmp
+cd /tmp &>>$LOG_FILE
 unzip mongodb.zip &>>LOG_FILE
 status_check $?
 
@@ -95,14 +95,8 @@ status_check $?
 echo -n "load user app schema "
 mongo < users.js &>>LOG_FILE
 status_check $?
+;;
 
- 
-;;
-cart)
-  heading
-#echo -e "\e[1;4;35msetting up cart\e[0m"
-echo -n 'installing mongodb'
-;;
 *)
 echo -n "not listed in service"
 exit 1
