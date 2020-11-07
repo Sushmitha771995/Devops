@@ -130,7 +130,7 @@ chown roboshop:roboshop /home/roboshop -R
 
 echo -n "Start system service"
 mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
-sed -i -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk" /etc/systemd/system/catalogue.service &>>$LOG_FILE
+sed -i -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/" /etc/systemd/system/catalogue.service &>>$LOG_FILE
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
 
