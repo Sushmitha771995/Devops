@@ -153,7 +153,7 @@ user)
 
   systemctl enable redis
   systemctl start redis
-
+;;
 
 *)
 echo -n "not listed in service"
