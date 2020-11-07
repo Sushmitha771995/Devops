@@ -98,13 +98,13 @@ status_check $?
 
 catalogue)
   echo -n "installing nodejs"
-  yum install nodejs make gcc-c++ -y
+  yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
   status_check $?
 
   echo -n "adding user"
   useradd roboshop &>>$LOG_FILE
   case $? in
-  9\0) exit 0
+  9|0) exit 0
     ;;
   *) exit $?
     ;;
