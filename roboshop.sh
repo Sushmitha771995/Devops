@@ -55,9 +55,9 @@ systemctl restart nginx &>>$LOG_FILE
 
 mongodb)
 heading
-echo -n "installing nodejs     "
+echo -n "updating mongo repos "
 
-echo echo '[mongodb-org-4.2]
+echo '[mongodb-org-4.2]
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
 gpgcheck=1
