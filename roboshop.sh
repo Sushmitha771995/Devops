@@ -96,7 +96,7 @@ mongo < users.js &>>$LOG_FILE
 status_check $?
 ;;
 
-catalogue)
+
 
 *)
 echo -n "not listed in service"
