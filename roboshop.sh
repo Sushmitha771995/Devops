@@ -73,6 +73,12 @@ echo -n "changing IP address "
 sed -i -e "s/127.0.0.1/0.0.0.0/" /etc/mongod.conf &>>LOG_FILE
 status_check $?
 
+systemctl enable mongod &>>$LOG_FILE
+status_check $?
+
+systemctl restart mongod &>>$LOG_FILE
+status_check $?
+
 echo -n "extracting schema"
 curl -s -L -o /tmp/mongodb.zip "https://dev.azure.com/DevOps-Batches/ce99914a-0f7d-4c46-9ccc-e4d025115ea9/_apis/git/repositories/e9218aed-a297-4945-9ddc-94156bd81427/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
 status_check $?
@@ -90,8 +96,6 @@ echo -n "load user app schema "
 mongo < users.js &>>LOG_FILE
 status_check $?
 
-systemctl enable mongod &>>$LOG_FILE
-systemctl restart mongod &>>$LOG_FILE
  
 ;;
 cart)
