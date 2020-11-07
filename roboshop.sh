@@ -53,7 +53,7 @@ systemctl enable nginx &>>$LOG_FILE
 systemctl restart nginx &>>$LOG_FILE
 ;;
 
-catalogue)
+mongodb)
 heading
 echo -n "installing nodejs     "
 echo '[mongodb-org-4.2]
