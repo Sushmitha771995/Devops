@@ -126,7 +126,7 @@ echo -n "Download dependent packages"
 npm install &>>$LOG_FILE
 status_check $?
 
-chown robosho:roboshop /home/roboshop -R
+chown roboshop:roboshop /home/roboshop -R
 
 echo -n "Start system service"
 mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
