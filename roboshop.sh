@@ -116,9 +116,9 @@ catalogue)
  status_check $?
 
 echo -n "extracting catalogue file"
- cd /home/roboshop &>>$LOG_FILE
- mkdir catalogue  &>>$LOG_FILE
- cd catalogue &>>$LOG_FILE
+ cd /home/roboshop
+ mkdir catalogue
+ cd catalogue
  unzip /tmp/catalogue.zip &>>$LOG_FILE
  status_check $?
 
