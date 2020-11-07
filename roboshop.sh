@@ -123,7 +123,7 @@ echo -n "extracting catalogue file"
  status_check $?
 
 echo -n "Download dependent packages"
-npm install  $>>LOG_FILE
+npm install
 status_check $?
 
 echo -n "Start system service"
