@@ -157,6 +157,48 @@ redis)
   status_check $?
 ;;
 
+user)
+echo -n "installing node js"
+yum install nodejs make gcc-c++ -y  &>>LOG_FILE
+status_check $?
+
+echo -n "adding user\t"
+  useradd roboshop &>>$LOG_FILE
+
+  case $? in
+  9|0) status_check 0
+    ;;
+  *) status_check $?
+    ;;
+    esac
+
+ echo -n "downloading configuration files"
+  curl -s -L -o /tmp/catalogue.zip /tmp/user.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/360c1f78-e8ed-41e8-8b3d-bdd12dc8a6a1/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
+status_check $?
+
+echo -n "extracting user file"
+ cd /home/roboshop
+ mkdir -p user
+ cd user
+ unzip -o /tmp/user.zip &>>$LOG_FILE
+ status_check $?
+
+echo -n "Download dependent packages"
+npm install &>>$LOG_FILE
+status_check $?
+
+chown roboshop:roboshop /home/user -R
+
+echo -n "Start system service"
+#mv /home/roboshop/user/systemd.service /etc/systemd/system/user.service &>>$LOG_FILE
+#sed -i -e "s/MONGO_DNSNAME/redis-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
+systemctl daemon-reload &>>$LOG_FILE
+status_check $?
+
+systemctl start user &>>$LOG_FILE
+status_check $?
+systemctl enable user &>>$LOG_FILE
+;;
 *)
 echo -n "not listed in service"
 exit 1
