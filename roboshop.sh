@@ -74,7 +74,7 @@ status_check $?
 systemctl enable mongod &>>$LOG_FILE
 status_check $?
 
-systemctl restart mongod &>>$LOG_FILE
+systemctl start mongod &>>$LOG_FILE
 status_check $?
 
 echo -n "extracting schema"
