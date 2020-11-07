@@ -25,7 +25,7 @@ heading
 
 case $service in
 frontend)
-echo -n "installing nginx    "
+echo -n "installing nginx\t    "
 yum install nginx -y &>>$LOG_FILE
 status_check $?
 
