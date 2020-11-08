@@ -201,6 +201,53 @@ systemctl start user &>>$LOG_FILE
 status_check $?
 systemctl enable user &>>$LOG_FILE
 ;;
+
+cart)
+echo -n "installing node js"
+yum install nodejs make gcc-c++ -y  &>>LOG_FILE
+status_check $?
+
+echo -n "adding user\t"
+  useradd roboshop &>>$LOG_FILE
+
+  case $? in
+  9|0) status_check 0
+    ;;
+  *) status_check $?
+    ;;
+    esac
+
+ echo -n "downloading configuration files"
+ curl -s -L -o /tmp/cart.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/d1ba7cbf-6c60-4403-865d-8a522a76cd76/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
+ status_check $?
+
+echo -n "extracting cart file"
+ cd /home/roboshop
+ mkdir -p user
+ cd user
+ unzip -o /tmp/cart.zip &>>$LOG_FILE
+ status_check $?
+
+echo -n "Download dependent packages"
+npm install &>>$LOG_FILE
+status_check $?
+
+chown roboshop:roboshop /home/roboshop/user -R
+
+echo -n "Start system service"
+mv /home/roboshop/cart/systemd.service /etc/systemd/system/cart.service
+
+#sed -i -e "s/MONGO_ENDPOINT/mongodb-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
+#sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE#
+systemctl daemon-reload &>>$LOG_FILE
+status_check $?
+
+systemctl start user &>>$LOG_FILE
+status_check $?
+systemctl enable user &>>$LOG_FILE
+;;
+
+
 *)
 echo -n "not listed in service"
 exit 1
