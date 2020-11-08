@@ -383,14 +383,15 @@ echo -n "Download the repo"
 
 
 echo -n "Install the dependencies"
- cd /home/roboshop/payment
- pip3 install -r requirements.txt &>>$LOG_FILE
+cd /home/roboshop/payment
+pip3 install -r requirements.txt &>>$LOG_FILE
+status_check $?
 
 
 #Update the roboshop user and group id in payment.ini file.
 chown roboshop:roboshop /home/roboshop/payment -R
 
- mv /home/roboshop/payment/systemd.service /etc/systemd/system/payment.service
+mv /home/roboshop/payment/systemd.service /etc/systemd/system/payment.service &>>$LOG_FILE
 # systemctl daemon-reload
 # systemctl enable payment
 # systemctl start payment
