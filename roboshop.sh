@@ -242,9 +242,9 @@ sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/cart
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
 
-systemctl start user &>>$LOG_FILE
+systemctl start cart &>>$LOG_FILE
 status_check $?
-systemctl enable user &>>$LOG_FILE
+systemctl enable cart &>>$LOG_FILE
 ;;
 
 
