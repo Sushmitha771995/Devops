@@ -378,19 +378,19 @@ echo -n "Download the repo"
  curl -L -s -o /tmp/payment.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/64e9a902-e729-44ad-a562-8f605ae9617e/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
  mkdir -p payment
  cd payment
- unzip /tmp/payment.zip &>>$LOG_FILE
+ unzip -o /tmp/payment.zip &>>$LOG_FILE
  status_check $?
 
 
 echo -n "Install the dependencies"
  cd /home/roboshop/payment
- pip3 install -r requirements.txt
+ pip3 install -r requirements.txt &>>$LOG_FILE
 
 
 #Update the roboshop user and group id in payment.ini file.
 chown roboshop:roboshop /home/roboshop/payment -R
 
-# mv /home/roboshop/payment/systemd.service /etc/systemd/system/payment.service
+ mv /home/roboshop/payment/systemd.service /etc/systemd/system/payment.service
 # systemctl daemon-reload
 # systemctl enable payment
 # systemctl start payment
