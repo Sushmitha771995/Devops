@@ -285,9 +285,9 @@ mvn clean package  &>>$LOG_FILE
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
 
-systemctl start cart &>>$LOG_FILE
+systemctl start shipping &>>$LOG_FILE
 status_check $?
-systemctl enable cart &>>$LOG_FILE
+systemctl enable shipping &>>$LOG_FILE
 ;;
 
 
