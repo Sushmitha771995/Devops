@@ -232,7 +232,7 @@ echo -n "Download dependent packages"
 npm install &>>$LOG_FILE
 status_check $?
 
-chown roboshop:roboshop /home/roboshop/user -R
+chown roboshop:roboshop /home/roboshop/cart -R
 
 echo -n "Start system service"
 mv /home/roboshop/cart/systemd.service /etc/systemd/system/cart.service
