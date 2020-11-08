@@ -247,6 +247,49 @@ status_check $?
 systemctl enable cart &>>$LOG_FILE
 ;;
 
+shipping)
+  echo -n "installing maven"
+  yum install maven -y &>>$LOG_FILE
+  status_check $?
+
+  echo -n "adding user\t"
+  useradd roboshop &>>$LOG_FILE
+
+  case $? in
+  9|0) status_check 0
+    ;;
+  *) status_check $?
+    ;;
+    esac
+
+ echo -n "downloading configuration files"
+ curl -s -L -o /tmp/shipping.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/1ebc164b-f649-49b5-807d-2e55dc14628e/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
+ status_check $?
+
+echo -n "extracting shiping file"
+ cd /home/roboshop
+ mkdir -p shipping
+ cd cart
+ unzip -o /tmp/shipping.zip &>>$LOG_FILE
+ status_check $?
+
+ echo -n "packaging "
+mvn clean package  &>>$LOG_FILE
+ mv target/shipping-1.0.jar shipping.jar &>>$LOG_FILE
+ status_check $?
+ cp /home/roboshop/shipping/systemd.service /etc/systemd/system/shipping.service &>>$LOG_FILE
+  status_check $?
+
+# sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
+#sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
+systemctl daemon-reload &>>$LOG_FILE
+status_check $?
+
+systemctl start cart &>>$LOG_FILE
+status_check $?
+systemctl enable cart &>>$LOG_FILE
+;;
+
 
 *)
 echo -n "not listed in service"
