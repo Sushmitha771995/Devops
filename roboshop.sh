@@ -338,17 +338,17 @@ rabbitmq)
   yum install https://packages.erlang-solutions.com/erlang/rpm/centos/7/x86_64/esl-erlang_22.2.1-1~centos~7_amd64.rpm -y &>>$LOG_FILE
 status_check $?
 echo -n "Setup YUM repositories for RabbitMQ"
-# curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | sudo bash &>>$LOG_FILE
+ curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | sudo bash &>>$LOG_FILE
 status_check $?
 
 echo -n "Install RabbitMQ"
-#yum install rabbitmq-server -y &>>$LOG_FILE
+yum install rabbitmq-server -y &>>$LOG_FILE
 status_check $?
 
 echo -n "Start RabbitMQ"
-#systemctl enable rabbitmq-server &>>$LOG_FILE
-# systemctl start rabbitmq-server &>>$LOG_FILE
-# status_check $?
+systemctl enable rabbitmq-server &>>$LOG_FILE
+systemctl start rabbitmq-server &>>$LOG_FILE
+status_check $?
 
 echo -n "Create application user"
 #rabbitmqctl add_user roboshop roboshop123 &>>$LOG_FILE
