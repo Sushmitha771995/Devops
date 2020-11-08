@@ -280,8 +280,8 @@ mvn clean package  &>>$LOG_FILE
  cp /home/roboshop/shipping/systemd.service /etc/systemd/system/shipping.service &>>$LOG_FILE
   status_check $?
 
-# sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
-#sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
+ sed -i -e "s/CARTENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/shipping.service &>>$LOG_FILE
+
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
 
