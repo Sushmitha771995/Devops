@@ -269,7 +269,7 @@ shipping)
 echo -n "extracting shiping file"
  cd /home/roboshop
  mkdir -p shipping
- cd cart
+ cd shipping
  unzip -o /tmp/shipping.zip &>>$LOG_FILE
  status_check $?
 
