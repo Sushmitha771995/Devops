@@ -395,9 +395,9 @@ chown roboshop:roboshop /home/roboshop/payment -R
 
 mv /home/roboshop/payment/systemd.service /etc/systemd/system/payment.service &>>$LOG_FILE
 
-sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
-sed -i -e "s/USERHOST/user-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
-sed -i -e "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
+sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
+sed -i -e "s/USERHOST/user-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
+sed -i -e "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
 status_check $?
 
 # systemctl daemon-reload
