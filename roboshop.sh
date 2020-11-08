@@ -291,28 +291,48 @@ systemctl enable shipping &>>$LOG_FILE
 ;;
 
 mysql)
-  echo -n "setig up repo"
-  echo '[mysql57-community]
+
+    Print "Setup repository\t"
+    echo '[mysql57-community]
 name=MySQL 5.7 Community Server
 baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
 enabled=1
 gpgcheck=0' > /etc/yum.repos.d/mysql.repo
-status_check &>>$LOG_FILE
+    Stat_Check $?
 
-echp -n "remov maria and install sql"
-yum remove mariadb-libs -y  &>>$LOG_FILE
-yum install mysql-community-server -y &>>$LOG_FILE
-status_check $?
+    Print "Install MySQL\t\t"
+    yum remove mariadb-libs -y &>>$LOG_FILE
+    yum install mysql-community-server -y &>>$LOG_FILE
+    Stat_Check $?
 
-systemctl enable mysql &>>$LOG_FILE
-status_check $?
-systemctl start mysql &>>$LOG_FILE
-status_check $?
+    Print "Start MySQL\t\t"
+    systemctl enable mysqld &>>$LOG_FILE
+    systemctl start mysqld &>>$LOG_FILE
+    Stat_Check $?
 
-sleep 30
+    echo "show databases;" | mysql -uroot -ppassword &>>$LOG_FILE
+    if [ $? -ne 0 ]; then
+        sleep 30
+        MYSQL_DEFAULT_PASSWORD=$(grep 'A temporary password' /var/log/mysqld.log | awk '{print $NF}')
+        echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyPassw0Rd@1';
+uninstall plugin validate_password;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';" >/tmp/reset.sql
 
-;;
+        Print "Reset Password\t"
+        mysql --connect-expired-password -uroot -p$MYSQL_DEFAULT_PASSWORD </tmp/reset.sql  &>>$LOG_FILE
+        Stat_Check $?
+    fi
 
+    Print "Download Schema\t\t"
+    curl -s -L -o /tmp/mysql.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/2a75b631-2da9-4ced-810e-8b3a8761729d/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
+    Stat_Check $?
+
+    Print "Load Schema\t\t"
+    cd /tmp
+    unzip -o mysql.zip &>>$LOG_FILE
+    mysql -u root -ppassword <shipping.sql &>>$LOG_FILE
+    Stat_Check $?
+    ;;
 
 
 *)
