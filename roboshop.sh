@@ -281,6 +281,7 @@ mvn clean package  &>>$LOG_FILE
   status_check $?
 
  sed -i -e "s/CARTENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/shipping.service &>>$LOG_FILE
+ sed -i -e "s/DBHOST/sql-test.firstdevops.tk/" /etc/systemd/system/shipping.service &>>$LOG_FILE
 
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
