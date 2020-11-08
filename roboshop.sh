@@ -394,6 +394,7 @@ chown roboshop:roboshop /home/roboshop/payment -R
 # systemctl daemon-reload
 # systemctl enable payment
 # systemctl start payment
+;;
 *)
 echo -n "not listed in service"
 exit 1
