@@ -237,8 +237,8 @@ chown roboshop:roboshop /home/roboshop/cart -R
 echo -n "Start system service"
 mv /home/roboshop/cart/systemd.service /etc/systemd/system/cart.service
 
-sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
-sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
+sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
+sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
 
