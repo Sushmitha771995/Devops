@@ -4,5 +4,5 @@
     URL: "play.com"
   tasks:
     debug:
-      msg: "Hey susmitha, Refer {{ URL }}
+      msg: "Hey susmitha, Refer {{ URL }}"
 
