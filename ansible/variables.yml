@@ -1,3 +1,15 @@
+- name: demo of play1
+  hosts: all
+  vars:
+    URL: "@example.com"
+  tasks:
+    - name: demo of task
+      debug:
+        msg: "hey sushmitha, refer {{ URL }}"
+
+
+
+
 - name: demo on variables
   hosts: all
   vars:
