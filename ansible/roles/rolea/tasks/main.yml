@@ -1,0 +1,6 @@
+- name: Demo on roles
+  debug:
+    msg: hello roleA
+- name: Dome on roles play2
+  debug:
+    msg: hey this is oe more task

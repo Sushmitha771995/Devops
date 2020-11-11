@@ -1,0 +1,4 @@
+-name: rles example
+ hosts: al
+ roles:
+   - rolea
