@@ -1,7 +1,7 @@
 #playbook starts with list
-- name: demo of play1
-  hosts: all
-  tasks:
-    -name: demo of task
-    deubug:
-      msg: "hey sushmitha"
+-name: demo of play1
+ hosts: all
+ tasks:
+   -name: demo of task
+   deubug:
+     msg: "hey sushmitha"
