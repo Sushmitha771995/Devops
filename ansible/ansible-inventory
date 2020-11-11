@@ -1,3 +1,4 @@
+[NODES]
 34.234.97.134
-[vars]
+[NODES:vars]
 URL=ex@123.com
