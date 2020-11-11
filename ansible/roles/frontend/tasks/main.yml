@@ -20,3 +20,8 @@
 - name: rename hte dir
   shell: mv /usr/share/nginx/static /usr/share/nginx/html
 
+- name:
+  systemd:
+    state: started
+    name: nginx
+
