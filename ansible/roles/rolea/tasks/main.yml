@@ -4,3 +4,7 @@
 - name: Dome on roles play2
   debug:
     msg: hey this is oe more task
+
+- name: demo for vars in roles
+  debug:
+    msg: "URL = {{ URL }}"
