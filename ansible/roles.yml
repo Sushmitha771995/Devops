@@ -1,4 +1,4 @@
 -name: rles example
- hosts: al
+ hosts: all
  roles:
    - rolea
