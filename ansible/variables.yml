@@ -15,6 +15,6 @@
   vars:
     URL: "play.com"
   tasks:
-    debug:
-      msg: "Hey susmitha, Refer {{ URL }}"
+    - debug:
+        msg: "Hey susmitha, Refer {{ URL }}"
 
