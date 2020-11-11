@@ -17,6 +17,6 @@
     src: /tmp/frontend.zip
     dest: /usr/share/nginx
     remote_src: yes
--name: rename hte dir
- shell: mv /usr/share/nginx/static /usr/share/nginx/html
+- name: rename hte dir
+  shell: mv /usr/share/nginx/static /usr/share/nginx/html
 
