@@ -15,6 +15,6 @@
 - name: unzip the docs
   unarchive:
     src: /tmp/frontend.zip
-    dest: /usr/share/nginx/html
+    dest: /usr/share/nginx
     remote_src: yes
 
