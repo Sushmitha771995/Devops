@@ -2,7 +2,7 @@
 - name: demo of play1
   hosts: all
   vars:
-    URL: @example.com
+    URL: "@example.com"
   tasks:
    - name: demo of task
      debug:
