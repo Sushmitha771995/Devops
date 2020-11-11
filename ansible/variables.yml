@@ -1,7 +1,7 @@
 - name: demo on variables
   hosts: all
   vars:
-    URL: play.com
+    URL: "play.com"
   tasks:
     debug:
       msg: "Hey susmitha, Refer {{ URL }}
