@@ -212,7 +212,7 @@ systemctl start cart
 systemctl enable cart &>>$LOG_FILE
 status_check $?
 ;;
-mysql)
+
 
 
 *)
