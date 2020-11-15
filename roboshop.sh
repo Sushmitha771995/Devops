@@ -6,7 +6,7 @@ echo -n -e "\e[4;31msetting up $service\e[0m"
 status_check()
 case $1 in
 0)
-  echo -e "\e34mSUCCESS\e[0m"
+  echo -e "\e[34mSUCCESS\e[0m"
   ;;
 *)
   echo -e "\e31Failure\e\0m"
@@ -53,6 +53,12 @@ status_check $?
 
 echo -e "\e[32mUpdating ip address\e[0m"
 sed -i -e "s/127.0.0.1/0.0.0.0/" /etc/mongod.conf &>>$LOG_FILE
+status_check $?
+
+systemctl enable mongod &>>$LOG_FILE
+status_check $?
+
+systemctl start mongod &>>$LOG_FILE
 status_check $?
 
 echo -e "\e[32mDownload schema\e[0m"
