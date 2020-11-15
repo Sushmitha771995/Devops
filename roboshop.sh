@@ -163,7 +163,7 @@ status_check $?
 
 echo -e "\e[3232msetting up config files\e[0m"
 mv /home/roboshop/user/systemd.service /etc/systemd/system/user.service &>>$LOG_FILE
-sed -i -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
+sed -i -e "s/MONGO_ENDPOINT/mongodb-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
 sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
