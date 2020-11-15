@@ -2,14 +2,14 @@
 
 service=$1
 LOG_FILE=/tmp/roboshop.log
-echo  -n -e "\e[4;31msetting up $service\e[0m"
+echo -n -e "\e[4;31msetting up $service\e[0m"
 status_check()
 case $1 in
 0)
-  echo -n -e "\e34mSUCCESS\e[0m"
+  echo -e "\e34mSUCCESS\e[0m"
   ;;
 *)
-  echo -n -e "\e31Failure\e\0m"
+  echo -e "\e31Failure\e\0m"
   ;;
 esac
 
