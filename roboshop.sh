@@ -173,6 +173,45 @@ systemctl enable user &>>$LOG_FILE
 #status_check $?
 ;;
 
+cart)
+  echo -e "\e[3232minstalling node\e[0m"
+yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
+status_check $?
+
+useradd roboshop &>>$LOG_FILE
+
+case $? in
+  9|0) status_check 0
+    ;;
+  *) status_check $?
+    ;;
+    esac
+
+echo -e "\e[3232minstalling dependencies\e[0m"
+curl -s -L -o /tmp/cart.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/d1ba7cbf-6c60-4403-865d-8a522a76cd76/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
+status_check $?
+cd /home/roboshop
+mkdir -p cart
+cd cart
+unzip -o /tmp/cart.zip
+status_check $?
+npm install
+status_check $?
+
+chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
+status_check $?
+
+echo -e "\e[3232msetting up config files\e[0m"
+mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/cart.service &>>$LOG_FILE
+sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
+sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
+systemctl daemon-reload &>>$LOG_FILE
+status_check $?
+systemctl start cart &>>$LOG_FILE
+status_check $?
+systemctl enable cart &>>$LOG_FILE
+status_check $?
+;;
 
 
 
