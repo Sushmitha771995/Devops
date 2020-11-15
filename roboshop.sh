@@ -207,12 +207,12 @@ sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/" /etc/systemd/sys
 sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
-systemctl start cart &>>$LOG_FILE
-status_check $?
+systemctl start cart
+#status_check $?
 systemctl enable cart &>>$LOG_FILE
 status_check $?
 ;;
-
+mysql)
 
 
 *)
