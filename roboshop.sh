@@ -105,6 +105,7 @@ status_check $?
 
 echo -e "\e[3232msetting up config files\e[0m"
 mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
+sed -i -e "s/MONGO_DNSNAME/mongodb-test.first.devops.tk/" /etc/systemd/system/catalogue.service
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
 systemctl start catalogue &>>$LOG_FILE
