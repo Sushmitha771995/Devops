@@ -7,8 +7,12 @@ status_check()
 case $1 in
 0)
   echo -n "\e34mSUCCESS\e[0m"
+  ;;
 *)
   echo -n "\e31Failure\e\0m"
+  ;;
+esac
+
 case $service in
 frontend)
   echo -e "\e[32m installing nginx\e[0m"
