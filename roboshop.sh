@@ -167,9 +167,9 @@ sed -i -e "s/MONGO_ENDPOINT/mongodb-test.firstdevops.tk/" /etc/systemd/system/us
 sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
-systemctl start catalogue
+systemctl start user
 #status_check $?
-systemctl enable catalogue &>>$LOG_FILE
+systemctl enable user &>>$LOG_FILE
 #status_check $?
 ;;
 
