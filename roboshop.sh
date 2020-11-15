@@ -34,7 +34,7 @@ status_check $?
   echo -e "\e[32mstart ngnx service\e[0m"
   systemctl enable nginx &>>$LOG_FILE
   status_check $?
-  systemctl restart nginx &>>$LOG_FILE
+  systemctl start nginx &>>$LOG_FILE
   status_check $?
   ;;
 mongodb)
