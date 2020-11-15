@@ -100,7 +100,7 @@ status_check $?
 npm install
 status_check $?
 
-chown -R roboshop:roboshop * &>>$LOG_FILE
+chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
 status_check $?
 
 echo -e "\e[3232msetting up config files\e[0m"
