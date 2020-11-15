@@ -130,7 +130,7 @@ systemctl enable redis &>>$LOG_FILE
  status_check $?
 systemctl start redis &>>$LOG_FILE
  status_check $?
-
+;;
  user)
    echo -e "\e[3232minstalling node\e[0m"
 yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
