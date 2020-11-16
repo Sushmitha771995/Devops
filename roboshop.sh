@@ -237,7 +237,7 @@ status_check $?
 mvn clean package  &>>$LOG_FILE
 status_check $?
 mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
-chown -R roboshop:roboshop /home/roboshop/cart &>>$LOG_FILE
+chown -R roboshop:roboshop /home/roboshop/ &>>$LOG_FILE
 status_check $?
 
 echo -e "\e[3232msetting up config files\e[0m"
