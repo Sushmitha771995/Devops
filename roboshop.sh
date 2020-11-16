@@ -246,9 +246,9 @@ sed -i -e "s/CARTENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/shippin
 sed -i -e "s/DBHOST/sql-test.firstdevops.tk/" /etc/systemd/system/shipping.service &>>$LOG_FILE
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
-systemctl start shipping
+systemctl enable shipping
 #status_check $?
-systemctl enable shipping &>>$LOG_FILE
+systemctl restart shipping &>>$LOG_FILE
 status_check $?
 ;;
 
