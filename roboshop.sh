@@ -236,7 +236,7 @@ unzip -o /tmp/shipping.zip &>>$LOG_FILE
 status_check $?
 mvn clean package  &>>$LOG_FILE
 status_check $?
-v target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
+mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
 chown -R roboshop:roboshop /home/roboshop/cart &>>$LOG_FILE
 status_check $?
 
@@ -252,6 +252,116 @@ systemctl enable shipping &>>$LOG_FILE
 status_check $?
 ;;
 
+mysql)
+  echo -e "\e[3232msetting up mysql repos\e[0m"
+echo '[mysql57-community]
+name=MySQL 5.7 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
+enabled=1
+gpgcheck=0' > /etc/yum.repos.d/mysql.repo
+status_check $?
+
+
+echo -e "\e[3232mInstalling mmysql\e[0m"
+yum remove mariadb-libs -y &>>$LOG_FILE
+yum install mysql-community-server -y &>>$LOG_FILE
+status_check $?
+
+echo "Start MySQL\t\t"
+    systemctl enable mysqld &>>$LOG_FILE
+    systemctl start mysqld &>>$LOG_FILE
+    status_check $?
+echo "show databases;" | mysql -uroot -ppassword &>>$LOG_FILE
+    if [ $? -ne 0 ]; then
+        sleep 30
+        MYSQL_DEFAULT_PASSWORD=$(grep 'A temporary password' /var/log/mysqld.log | awk '{print $NF}')
+        echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyPassw0Rd@1';
+uninstall plugin validate_password;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';" >/tmp/reset.sql
+
+        echo "Reset Password\t"
+        mysql --connect-expired-password -uroot -p$MYSQL_DEFAULT_PASSWORD </tmp/reset.sql  &>>$LOG_FILE
+        status_check $?
+    fi
+
+    echo "Download Schema\t\t"
+    curl -s -L -o /tmp/mysql.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/2a75b631-2da9-4ced-810e-8b3a8761729d/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
+    status_check $?
+
+    echo "Load Schema\t\t"
+    cd /tmp
+    unzip -o mysql.zip &>>$LOG_FILE
+    mysql -u root -ppassword <shipping.sql &>>$LOG_FILE
+    status_check $?
+    ;;
+
+rabbitmq)
+
+  echo -e "\e[3232mInstalling dependencies\e[0m"
+  yum install https://packages.erlang-solutions.com/erlang/rpm/centos/7/x86_64/esl-erlang_22.2.1-1~centos~7_amd64.rpm -y  &>>$LOG_FILE
+
+echo -e "\e[3232mSetting up repos\e[0m"
+curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | sudo bash &>>$LOG_FILE
+status_check $?
+
+echo -e "\e[3232mInstalling rabbitmq \e[0m"
+yum install rabbitmq-server -y &>>$LOG_FILE
+status_check $?
+
+echo -n "Start RabbitMQ"
+systemctl enable rabbitmq-server &>>$LOG_FILE
+systemctl start rabbitmq-server &>>$LOG_FILE
+status_check $?
+
+echo -n "Create application user"
+rabbitmqctl add_user roboshop roboshop123 &>>$LOG_FILE
+rabbitmqctl set_user_tags roboshop administrator &>>$LOG_FILE
+ rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$LOG_FILE
+ status_check $?
+
+;;
+
+payment)
+ echo -n "dependecny installation"
+  yum install python36 gcc python3-devel -y &>>$LOG_FILE
+
+  useradd roboshop &>>$LOG_FILE
+
+case $? in
+  9|0) status_check 0
+    ;;
+  *) status_check $?
+    ;;
+    esac
+
+echo -e "\e[3232minstalling dependencies\e[0m"
+cd /home/roboshop
+curl -L -s -o /tmp/payment.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/64e9a902-e729-44ad-a562-8f605ae9617e/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
+status_check $?
+mkdir -p payment
+cd payment
+unzip -o /tmp/payment.zip &>>$LOG_FILE
+status_check $?
+unzip -o /tmp/payment.zip  &>>$LOG_FILE
+status_check $?
+cd /home/roboshop/payment   &>>$LOG_FILE
+pip3 install -r requirements.txt
+chown -R roboshop:roboshop /home/roboshop/ &>>$LOG_FILE
+status_check $?
+
+echo -e "\e[3232msetting up config files\e[0m"
+mv /home/roboshop/payment/systemd.service /etc/systemd/system/payment.service
+sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
+sed -i -e "s/USERHOST/user-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
+sed -i -e "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
+status_check $?
+systemctl daemon-reload &>>$LOG_FILE
+status_check $?
+systemctl start payment
+status_check $?
+systemctl enable payment &>>$LOG_FILE
+status_check $?
+;;
 
 *)
   echo -e "\e[31minvalied service\e[0m"
