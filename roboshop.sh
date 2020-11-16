@@ -193,12 +193,12 @@ status_check $?
 cd /home/roboshop
 mkdir -p cart
 cd cart
-unzip -o /tmp/cart.zip
+unzip -o /tmp/cart.zip &>>$LOG_FILE
 status_check $?
-npm install
+npm install &>>$LOG_FILE
 status_check $?
 
-chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
+chown -R roboshop:roboshop /home/roboshop/cart &>>$LOG_FILE
 status_check $?
 
 echo -e "\e[3232msetting up config files\e[0m"
@@ -212,6 +212,8 @@ systemctl start cart
 systemctl enable cart &>>$LOG_FILE
 status_check $?
 ;;
+shipping)
+  
 
 
 
