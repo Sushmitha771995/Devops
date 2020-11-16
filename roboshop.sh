@@ -230,8 +230,8 @@ echo -e "\e[3232minstalling dependencies\e[0m"
 curl -s -L -o /tmp/shipping.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/1ebc164b-f649-49b5-807d-2e55dc14628e/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
 status_check $?
 cd /home/roboshop
-mkdir -p shiping
-cd cart
+mkdir -p shipping
+cd shipping
 unzip -o /tmp/shipping.zip &>>$LOG_FILE
 status_check $?
 mvn clean package  &>>$LOG_FILE
