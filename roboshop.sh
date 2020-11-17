@@ -72,7 +72,7 @@ systemctl enable {service}
 
 }
 uid= $(id -u)
-if [$uid -ne 0]
+if [$uid -ne 0];
 then
   echo -e "\e[31mlogin as root user\e[0m"
   exit 2
