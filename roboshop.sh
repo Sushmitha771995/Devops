@@ -59,8 +59,8 @@ status_check $?
 
 echo -n -e "\e[3232msetting up config files\e[0m\t\t"
 mv /home/roboshop/$service/systemd.service /etc/systemd/system/$service.service &>>$LOG_FILE
-sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_DNSNAME/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongo-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/$service.service &>>$LOG_FILE
-sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/$service.service &>>$LOG_FILE
+sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_DNSNAME/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongodb-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/$service.service &>>$LOG_FILE
+#sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/$service.service &>>$LOG_FILE
 status_check $?
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
