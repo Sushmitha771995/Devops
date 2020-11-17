@@ -34,43 +34,43 @@ yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
 status_check $?
 }
 
-node_js()
-{
-  echo -n -e "\e[3232mInstalling dependecies\e[0m"
-cd /home/roboshop
-mkdir -p $service
-unzip -o /tmp/{$service}.zip &>>$LOG_FILE
-if $service == "payment"
-then
-pip3 install -r requirements.txt &>>$LOG_FILE
-status_check $?
-elif $service == "shipping"
-then
-mvn clean package  &>>$LOG_FILE
+#node_js()
+#{
+#  echo -n -e "\e[3232mInstalling dependecies\e[0m"
+#cd /home/roboshop
+#mkdir -p $service
+#unzip -o /tmp/{$service}.zip &>>$LOG_FILE
+#if $service == "payment"
+#then
+#pip3 install -r requirements.txt &>>$LOG_FILE
 #status_check $?
-mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
-status_check $?
-else
-npm install &>>$LOG_FILE
-status_check $?
-fi
+#elif $service == "shipping"
+#then
+#mvn clean package  &>>$LOG_FILE
+#status_check $?
+#mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
+#status_check $?
+#else
+#npm install &>>$LOG_FILE
+#status_check $?
+#fi
 
-echo -n -e "\e[3232mChanging app user\e[0m"
-chown -R roboshop:roboshop /home/roboshop/{service} &>>$LOG_FILE
-status_check $?
+#echo -n -e "\e[3232mChanging app user\e[0m"
+#chown -R roboshop:roboshop /home/roboshop/{service} &>>$LOG_FILE
+#status_check $?
 
-echo -n -e "\e[3232msetting up config files\e[0m"
-mv /home/roboshop/{service}/systemd.service /etc/systemd/system/{service}.service &>>$LOG_FILE
-sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongo-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
-sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
-status_check $?
+#echo -n -e "\e[3232msetting up config files\e[0m"
+#mv /home/roboshop/{service}/systemd.service /etc/systemd/system/{service}.service &>>$LOG_FILE
+#sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongo-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
+#sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
+#status_check $?
 
-echo -n -e "\e[32mStarting the service\e[0m"
-systemctl daemon-reload &>>$LOG_FILE
-systemctl start {service}
-systemctl enable {service}
+#echo -n -e "\e[32mStarting the service\e[0m"
+#systemctl daemon-reload &>>$LOG_FILE
+#systemctl start {service}
+#systemctl enable {service}
 
-}
+#}
 uid=$(id -u)
 if [ $uid -ne 0 ];
 then
