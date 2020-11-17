@@ -142,33 +142,46 @@ status_check $?
 
 catalogue)
 
-node_install
-app_user
+catalogue)
 
-echo -e "\e[3232minstalling dependencies\e[0m"
-curl -s -L -o /tmp/catalogue.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/1a7bd015-d982-487f-9904-1aa01c825db4/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true"
+echo -n -e "\e[3232minstalling node\e[0m\t\t"
+yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
 status_check $?
 
-node_js
+useradd roboshop &>>$LOG_FILE
+
+case $? in
+  9|0) status_check 0
+    ;;
+  *) status_check $?
+    ;;
+    esac
+
+echo -n  -e "\e[3232minstalling dependencies\e[0m\t\t"
+curl -s -L -o /tmp/catalogue.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/1a7bd015-d982-487f-9904-1aa01c825db4/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true"
+status_check $?
+cd /home/roboshop
+mkdir -p catalogue
+cd catalogue
+unzip -o /tmp/catalogue.zip
+status_check $?
+npm install
+status_check $?
+
+chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
+status_check $?
+
+echo -n -e "\e[3232msetting up config files\e[0m\t\t"
+mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
+sed -i -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/" /etc/systemd/system/catalogue.service
+systemctl daemon-reload &>>$LOG_FILE
+status_check $?
+systemctl start catalogue &>>$LOG_FILE
+status_check $?
+systemctl enable catalogue &>>$LOG_FILE
+status_check $?
 ;;
 
-redis)
- echo -e "\e[3232mInstalling redis\e[0m"
- yum install epel-release yum-utils -y &>>$LOG_FILE
- yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y &>>$LOG_FILE
- yum-config-manager --enable remi &>>$LOG_FILE
- yum install redis -y  &>>$LOG_FILE
- status_check $?
- echo -e "\e[3232mUpdate config files\e[0m"
- sed -i -e "s/127.0.0.1/0.0.0.0/" /etc/redis.conf &>>$LOG_FILE
- status_check $?
-
- echo -e "\e[3232mStarting redis service\e[0m"
-systemctl enable redis &>>$LOG_FILE
- status_check $?
-systemctl start redis &>>$LOG_FILE
- status_check $?
-;;
  user)
 node_install
 
