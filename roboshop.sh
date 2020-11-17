@@ -2,7 +2,7 @@
 
 service=$1
 LOG_FILE=/tmp/roboshop.log
-echo -n -e "\e[4;31msetting up $service\e[0m"
+echo  -e "\e[4;31msetting up $service\e[0m"
 status_check()
 {
 case $1 in
@@ -29,47 +29,56 @@ case $? in
 
 node_install()
 {
-echo -e "\e[3232minstalling node\e[0m"
+echo -n -e "\e[3232mInstalling node js\e[0m"
 yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
 status_check $?
 }
 
 node_js()
 {
+  echo -n -e "\e[3232mInstalling dependecies\e[0m"
 cd /home/roboshop
 mkdir -p $service
-cd $service
 unzip -o /tmp/{$service}.zip &>>$LOG_FILE
-status_check $?
 if $service == "payment"
 then
-pip3 install -r requirements.txt
-
+pip3 install -r requirements.txt &>>$LOG_FILE
+status_check $?
 elif $service == "shipping"
 then
 mvn clean package  &>>$LOG_FILE
-status_check $?
+#status_check $?
 mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
 status_check $?
 else
 npm install &>>$LOG_FILE
 status_check $?
 fi
+
+echo -n -e "\e[3232mChanging app user\e[0m"
 chown -R roboshop:roboshop /home/roboshop/{service} &>>$LOG_FILE
 status_check $?
 
-echo -e "\e[3232msetting up config files\e[0m"
+echo -n -e "\e[3232msetting up config files\e[0m"
 mv /home/roboshop/{service}/systemd.service /etc/systemd/system/{service}.service &>>$LOG_FILE
 sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongo-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
 sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
-
-systemctl daemon-reload &>>$LOG_FILE
 status_check $?
+
+echo -n -e "\e[3232mStarting the service\e[0m"
+systemctl daemon-reload &>>$LOG_FILE
 systemctl start {service}
-#status_check $?
 systemctl enable {service}
 
 }
+uid= $(id -u)
+if [$uid -ne 0]
+then
+  echo -e "\e[31mlogin as root user\e[0m"
+  exit 2
+fi
+set-hostname $service
+disable-auto-shutdown
 
 case $service in
 frontend)
@@ -78,22 +87,19 @@ frontend)
 status_check $?
   echo -n -e "\e[32mDownload nginx docs\e[0m"
   curl -s -L -o /tmp/frontend.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/a781da9c-8fca-4605-8928-53c962282b74/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
-  echo -n -e "\e[32m removing default and setting up configuration files\e[0m"
-  status_check $?
+
+  echo -n -e "\e[32mSetting up config files\e[0m"
   cd /usr/share/nginx/html
   rm -rf * &>>$LOG_FILE
-  status_check $?
   unzip /tmp/frontend.zip &>>$LOG_FILE
   mv static/* . &>>$LOG_FILE
   rm -rf static README.md &>>$LOG_FILE
-  status_check $?
   mv localhost.conf /etc/nginx/default.d/roboshop.conf &>>$LOG_FILE
   status_check $?
-  echo -e "\e[32mstart ngnx service\e[0m"
+
+  echo -n -e "\e[32mstart nginx service\e[0m"
   systemctl enable nginx &>>$LOG_FILE
-  status_check $?
   systemctl start nginx &>>$LOG_FILE
-  status_check $?
   ;;
 mongodb)
   echo -e "\e[32msetting up repos\e[0m"
