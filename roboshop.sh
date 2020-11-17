@@ -143,6 +143,7 @@ node_js "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2f
 ;;
 
 redis)
+
  echo -e "\e[3232mInstalling redis\e[0m"
  yum install epel-release yum-utils -y &>>$LOG_FILE
  yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y &>>$LOG_FILE
