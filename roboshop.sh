@@ -34,8 +34,8 @@ echo -n -e "\e[3232minstalling node\e[0m\t\t"
 yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
 status_check $?
 
-useradd roboshop &>>$LOG_FILE
-
+#useradd roboshop &>>$LOG_FILE
+app_user
 case $? in
   9|0) status_check 0
     ;;
@@ -60,7 +60,7 @@ status_check $?
 echo -n -e "\e[3232msetting up config files\e[0m\t\t"
 mv /home/roboshop/$service/systemd.service /etc/systemd/system/$service.service &>>$LOG_FILE
 sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_DNSNAME/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongodb-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/$service.service &>>$LOG_FILE
-#sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/$service.service &>>$LOG_FILE
+sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/$service.service &>>$LOG_FILE
 status_check $?
 systemctl daemon-reload &>>$LOG_FILE
 status_check $?
@@ -147,7 +147,7 @@ node_js "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2f
 ;;
 
  user)
-node_install
+node_js
 
 app_user
 
