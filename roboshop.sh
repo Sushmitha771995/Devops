@@ -65,14 +65,15 @@ sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_END
 sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
 status_check $?
 
-echo -n -e "\e[3232mStarting the service\e[0m"
+echo -n -e "\e[32mStarting the service\e[0m"
 systemctl daemon-reload &>>$LOG_FILE
 systemctl start {service}
 systemctl enable {service}
 
 }
 uid=$(id -u)
-if [ $uid -ne 0 ]; then
+if [ $uid -ne 0 ];
+then
   echo -e "\e[1;31mYou should be a sudo / root user to execute this script\e[0m"
   exit 2
 fi
