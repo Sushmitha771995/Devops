@@ -71,24 +71,24 @@ systemctl start {service}
 systemctl enable {service}
 
 }
-uid= $(id -u)
-if [$uid -ne 0];
-then
-  echo -e "\e[31mlogin as root user\e[0m"
+uid=$(id -u)
+if [ $uid -ne 0 ]; then
+  echo -e "\e[1;31mYou should be a sudo / root user to execute this script\e[0m"
   exit 2
 fi
+
 set-hostname $service
 disable-auto-shutdown
 
 case $service in
 frontend)
-  echo -n -e "\e[32m installing nginx\e[0m\t\t\t"
+  echo -n -e "\e[32mInstalling nginx\e[0m\t\t\t"
   yum install nginx -y &>>$LOG_FILE
 status_check $?
   echo -n -e "\e[32mDownload nginx docs\e[0m\t\t\t"
   curl -s -L -o /tmp/frontend.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/a781da9c-8fca-4605-8928-53c962282b74/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
 status_check $?
-  echo -n -e "\e[32mSetting up config files\e[0m\t\t"
+  echo -n -e "\e[32mSetting up config files\e[0m\t\t\t"
   cd /usr/share/nginx/html
   rm -rf * &>>$LOG_FILE
   unzip /tmp/frontend.zip &>>$LOG_FILE
@@ -97,7 +97,7 @@ status_check $?
   mv localhost.conf /etc/nginx/default.d/roboshop.conf &>>$LOG_FILE
   status_check $?
 
-  echo -n -e "\e[32mstart nginx service\e[0m\t\t"
+  echo -n -e "\e[32mstart nginx service\e[0m\t\t\t"
   systemctl enable nginx &>>$LOG_FILE
   systemctl start nginx &>>$LOG_FILE
   status_check $?
