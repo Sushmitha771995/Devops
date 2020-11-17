@@ -140,7 +140,6 @@ status_check $?
  status_check $?
 ;;
 
-catalogue)
 
 catalogue)
 
