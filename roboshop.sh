@@ -34,43 +34,48 @@ yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
 status_check $?
 }
 
-#node_js()
-#{
-#  echo -n -e "\e[3232mInstalling dependecies\e[0m"
-#cd /home/roboshop
-#mkdir -p $service
-#unzip -o /tmp/{$service}.zip &>>$LOG_FILE
-#if $service == "payment"
-#then
-#pip3 install -r requirements.txt &>>$LOG_FILE
-#status_check $?
-#elif $service == "shipping"
-#then
-#mvn clean package  &>>$LOG_FILE
-#status_check $?
-#mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
-#status_check $?
-#else
-#npm install &>>$LOG_FILE
-#status_check $?
-#fi
+node_js()
+{
+echo -n -e "\e[3232minstalling node\e[0m\t\t"
+yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
+status_check $?
 
-#echo -n -e "\e[3232mChanging app user\e[0m"
-#chown -R roboshop:roboshop /home/roboshop/{service} &>>$LOG_FILE
-#status_check $?
+useradd roboshop &>>$LOG_FILE
 
-#echo -n -e "\e[3232msetting up config files\e[0m"
-#mv /home/roboshop/{service}/systemd.service /etc/systemd/system/{service}.service &>>$LOG_FILE
-#sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongo-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
-#sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
-#status_check $?
+case $? in
+  9|0) status_check 0
+    ;;
+  *) status_check $?
+    ;;
+    esac
 
-#echo -n -e "\e[32mStarting the service\e[0m"
-#systemctl daemon-reload &>>$LOG_FILE
-#systemctl start {service}
-#systemctl enable {service}
+echo -n  -e "\e[3232minstalling dependencies\e[0m\t\t"
+curl -s -L -o /tmp/$service.zip "$1" &>>$LOG_FILE
+status_check $?
+cd /home/roboshop
+mkdir -p $service
+cd $service
+unzip -o /tmp/$service.zip
+status_check $?
+npm install
+status_check $?
 
-#}
+chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
+status_check $?
+
+echo -n -e "\e[3232msetting up config files\e[0m\t\t"
+mv /home/roboshop/$service/systemd.service /etc/systemd/system/$service.service &>>$LOG_FILE
+sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongo-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
+sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
+status_check $?
+systemctl daemon-reload &>>$LOG_FILE
+status_check $?
+systemctl start $service &>>$LOG_FILE
+status_check $?
+systemctl enable $service &>>$LOG_FILE
+status_check $?
+
+}
 uid=$(id -u)
 if [ $uid -ne 0 ];
 then
@@ -143,42 +148,8 @@ status_check $?
 
 catalogue)
 
-echo -n -e "\e[3232minstalling node\e[0m\t\t"
-yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
-status_check $?
+node_js "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/1a7bd015-d982-487f-9904-1aa01c825db4/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true"
 
-useradd roboshop &>>$LOG_FILE
-
-case $? in
-  9|0) status_check 0
-    ;;
-  *) status_check $?
-    ;;
-    esac
-
-echo -n  -e "\e[3232minstalling dependencies\e[0m\t\t"
-curl -s -L -o /tmp/catalogue.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/1a7bd015-d982-487f-9904-1aa01c825db4/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true"
-status_check $?
-cd /home/roboshop
-mkdir -p catalogue
-cd catalogue
-unzip -o /tmp/catalogue.zip
-status_check $?
-npm install
-status_check $?
-
-chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
-status_check $?
-
-echo -n -e "\e[3232msetting up config files\e[0m\t\t"
-mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
-sed -i -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/" /etc/systemd/system/catalogue.service
-systemctl daemon-reload &>>$LOG_FILE
-status_check $?
-systemctl start catalogue &>>$LOG_FILE
-status_check $?
-systemctl enable catalogue &>>$LOG_FILE
-status_check $?
 ;;
 
  user)
