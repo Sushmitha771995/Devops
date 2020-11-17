@@ -38,7 +38,7 @@ status_check $?
 app_user
 
 echo -n  -e "\e[3232minstalling dependencies\e[0m\t\t"
-curl -s -L -o /tmp/$service.zip "$1" &>>$LOG_FILE
+curl -s -L -o /tmp/$service.zip "$1"
 status_check $?
 cd /home/roboshop
 mkdir -p $service
