@@ -4,6 +4,7 @@ service=$1
 LOG_FILE=/tmp/roboshop.log
 echo -n -e "\e[4;31msetting up $service\e[0m"
 status_check()
+{
 case $1 in
 0)
   echo -e "\e[34mSUCCESS\e[0m"
@@ -12,6 +13,63 @@ case $1 in
   echo -e "\e31Failure\e\0m"
   ;;
 esac
+}
+
+app_user()
+{
+  useradd roboshop &>>$LOG_FILE
+
+case $? in
+  9|0) status_check 0
+    ;;
+  *) status_check $?
+    ;;
+    esac
+}
+
+node_install()
+{
+echo -e "\e[3232minstalling node\e[0m"
+yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
+status_check $?
+}
+
+node_js()
+{
+cd /home/roboshop
+mkdir -p $service
+cd $service
+unzip -o /tmp/{$service}.zip &>>$LOG_FILE
+status_check $?
+if $service == "payment"
+then
+pip3 install -r requirements.txt
+
+elif $service == "shipping"
+then
+mvn clean package  &>>$LOG_FILE
+status_check $?
+mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
+status_check $?
+else
+npm install &>>$LOG_FILE
+status_check $?
+fi
+chown -R roboshop:roboshop /home/roboshop/{service} &>>$LOG_FILE
+status_check $?
+
+echo -e "\e[3232msetting up config files\e[0m"
+mv /home/roboshop/{service}/systemd.service /etc/systemd/system/{service}.service &>>$LOG_FILE
+sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/"  -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/"  -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" -e "s/MONGO_ENDPOINT/mongo-test.firstdevops.tk/" -e "s/DBHOST/sql-test.firstdevops.tk/" -e "s/CART_ENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
+sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" -e "s/USERHOST/user-test.firstdevops.tk/" "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/{service}.service &>>$LOG_FILE
+
+systemctl daemon-reload &>>$LOG_FILE
+status_check $?
+systemctl start {service}
+#status_check $?
+systemctl enable {service}
+
+}
 
 case $service in
 frontend)
@@ -76,42 +134,14 @@ status_check $?
 
 catalogue)
 
-echo -e "\e[3232minstalling node\e[0m"
-yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
-status_check $?
-
-useradd roboshop &>>$LOG_FILE
-
-case $? in
-  9|0) status_check 0
-    ;;
-  *) status_check $?
-    ;;
-    esac
+node_install
+app_user()
 
 echo -e "\e[3232minstalling dependencies\e[0m"
 curl -s -L -o /tmp/catalogue.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/1a7bd015-d982-487f-9904-1aa01c825db4/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true"
 status_check $?
-cd /home/roboshop
-mkdir -p catalogue
-cd catalogue
-unzip -o /tmp/catalogue.zip
-status_check $?
-npm install
-status_check $?
 
-chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
-status_check $?
-
-echo -e "\e[3232msetting up config files\e[0m"
-mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
-sed -i -e "s/MONGO_DNSNAME/mongodb-test.firstdevops.tk/" /etc/systemd/system/catalogue.service
-systemctl daemon-reload &>>$LOG_FILE
-status_check $?
-systemctl start catalogue &>>$LOG_FILE
-status_check $?
-systemctl enable catalogue &>>$LOG_FILE
-status_check $?
+node_js
 ;;
 
 redis)
@@ -132,124 +162,35 @@ systemctl start redis &>>$LOG_FILE
  status_check $?
 ;;
  user)
-   echo -e "\e[3232minstalling node\e[0m"
-yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
-status_check $?
+node_install
 
-useradd roboshop &>>$LOG_FILE
-
-case $? in
-  9|0) status_check 0
-    ;;
-  *) status_check $?
-    ;;
-    esac
+app_user
 
 echo -e "\e[3232, installing dependencies\e[0m"
 curl -s -L -o /tmp/user.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/360c1f78-e8ed-41e8-8b3d-bdd12dc8a6a1/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
  status_check $?
- cd /home/roboshop &>>$LOG_FILE
- status_check $?
- mkdir -p user &>>$LOG_FILE
- status_check $?
- cd user &>>$LOG_FILE
- unzip -o /tmp/user.zip &>>$LOG_FILE
- status_check $?
- npm install  &>>$LOG_FILE
- status_check $?
-
-chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
-status_check $?
-
-echo -e "\e[3232msetting up config files\e[0m"
-mv /home/roboshop/user/systemd.service /etc/systemd/system/user.service &>>$LOG_FILE
-sed -i -e "s/MONGO_ENDPOINT/mongodb-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
-sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/user.service &>>$LOG_FILE
-systemctl daemon-reload &>>$LOG_FILE
-status_check $?
-systemctl start user
-#status_check $?
-systemctl enable user &>>$LOG_FILE
-#status_check $?
+ node_js
 ;;
 
 cart)
-  echo -e "\e[3232minstalling node\e[0m"
-yum install nodejs make gcc-c++ -y  &>>$LOG_FILE
-status_check $?
-
-useradd roboshop &>>$LOG_FILE
-
-case $? in
-  9|0) status_check 0
-    ;;
-  *) status_check $?
-    ;;
-    esac
+node_install
+app_user
 
 echo -e "\e[3232minstalling dependencies\e[0m"
 curl -s -L -o /tmp/cart.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/d1ba7cbf-6c60-4403-865d-8a522a76cd76/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
 status_check $?
-cd /home/roboshop
-mkdir -p cart
-cd cart
-unzip -o /tmp/cart.zip &>>$LOG_FILE
-status_check $?
-npm install &>>$LOG_FILE
-status_check $?
-
-chown -R roboshop:roboshop /home/roboshop/cart &>>$LOG_FILE
-status_check $?
-
-echo -e "\e[3232msetting up config files\e[0m"
-mv /home/roboshop/cart/systemd.service /etc/systemd/system/cart.service &>>$LOG_FILE
-sed -i -e "s/CATALOGUE_ENDPOINT/catalogue-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
-sed -i -e "s/REDIS_ENDPOINT/redis-test.firstdevops.tk/" /etc/systemd/system/cart.service &>>$LOG_FILE
-systemctl daemon-reload &>>$LOG_FILE
-status_check $?
-systemctl start cart
-#status_check $?
-systemctl enable cart &>>$LOG_FILE
-status_check $?
+node_js
 ;;
 shipping)
   echo -e "\e[3232mInstall maven\e[0m"
-
 yum install maven -y
   
-useradd roboshop &>>$LOG_FILE
-
-case $? in
-  9|0) status_check 0
-    ;;
-  *) status_check $?
-    ;;
-    esac
+app_user
 
 echo -e "\e[3232minstalling dependencies\e[0m"
 curl -s -L -o /tmp/shipping.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/1ebc164b-f649-49b5-807d-2e55dc14628e/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
 status_check $?
-cd /home/roboshop
-mkdir -p shipping
-cd shipping
-unzip -o /tmp/shipping.zip &>>$LOG_FILE
-status_check $?
-mvn clean package  &>>$LOG_FILE
-status_check $?
-mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
-chown -R roboshop:roboshop /home/roboshop/ &>>$LOG_FILE
-status_check $?
-
-echo -e "\e[3232msetting up config files\e[0m"
-cp /home/roboshop/shipping/systemd.service /etc/systemd/system/shipping.service
-sed -i -e "s/CARTENDPOINT/cart-test.firstdevops.tk/" /etc/systemd/system/shipping.service &>>$LOG_FILE
-sed -i -e "s/DBHOST/sql-test.firstdevops.tk/" /etc/systemd/system/shipping.service &>>$LOG_FILE
-systemctl daemon-reload &>>$LOG_FILE
-status_check $?
-systemctl enable shipping
-#status_check $?
-systemctl restart shipping &>>$LOG_FILE
-status_check $?
+node_js
 ;;
 
 mysql)
@@ -325,42 +266,12 @@ payment)
  echo -n "dependecny installation"
   yum install python36 gcc python3-devel -y &>>$LOG_FILE
 
-  useradd roboshop &>>$LOG_FILE
-
-case $? in
-  9|0) status_check 0
-    ;;
-  *) status_check $?
-    ;;
-    esac
+app_user
 
 echo -e "\e[3232minstalling dependencies\e[0m"
-cd /home/roboshop
 curl -L -s -o /tmp/payment.zip "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/64e9a902-e729-44ad-a562-8f605ae9617e/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true" &>>$LOG_FILE
 status_check $?
-mkdir -p payment
-cd payment
-unzip -o /tmp/payment.zip &>>$LOG_FILE
-status_check $?
-unzip -o /tmp/payment.zip  &>>$LOG_FILE
-status_check $?
-cd /home/roboshop/payment   &>>$LOG_FILE
-pip3 install -r requirements.txt
-chown -R roboshop:roboshop /home/roboshop/ &>>$LOG_FILE
-status_check $?
-
-echo -e "\e[3232msetting up config files\e[0m"
-mv /home/roboshop/payment/systemd.service /etc/systemd/system/payment.service
-sed -i -e "s/CARTHOST/cart-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
-sed -i -e "s/USERHOST/user-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
-sed -i -e "s/AMQPHOST/rabbitmq-test.firstdevops.tk/" /etc/systemd/system/payment.service &>>$LOG_FILE
-status_check $?
-systemctl daemon-reload &>>$LOG_FILE
-status_check $?
-systemctl start payment
-status_check $?
-systemctl enable payment &>>$LOG_FILE
-status_check $?
+node_js
 ;;
 
 *)
