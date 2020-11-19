@@ -142,7 +142,7 @@ user)
 node_js "https://dev.azure.com/DevOps-Batches/f4b641c1-99db-46d1-8110-5c6c24ce2fb9/_apis/git/repositories/360c1f78-e8ed-41e8-8b3d-bdd12dc8a6a1/items?path=%2F&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=zip&api-version=5.0&download=true"
 ;;
 
-redis123)
+redis)
 echo -e "\e[3232mInstalling redis\e[0m"
 yum install epel-release yum-utils -y &>>$LOG_FILE
 yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y &>>$LOG_FILE
@@ -160,6 +160,7 @@ status_check $?
 systemctl start redis &>>$LOG_FILE
 status_check $?
 ;;
+
 cart)
 node_install
 app_user
