@@ -1,3 +1,4 @@
+#!bin/bash
 echo '[grafana]
 name=grafana
 baseurl=https://packages.grafana.com/oss/rpm
@@ -9,3 +10,5 @@ sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt' > /etc/yum.repos.d/grafana.repo
 
 sudo yum install grafana -y
+systemctl enable grafana-server
+systemctl start grafana-server
