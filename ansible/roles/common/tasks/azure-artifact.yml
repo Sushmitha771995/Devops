@@ -1,0 +1,5 @@
+- name: Copy AZ Repo file
+  copy:
+    src: azure-cli.repo
+    dest: /etc/yum.repos.d/azure-cli.repo
+
