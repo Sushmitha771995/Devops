@@ -8,6 +8,11 @@
     path: /usr/share/nginx/html
     state: absent
 
+- name: create htdoc directory
+  file:
+    path: usr/share/nginx/html
+    state: directory
+
 - name: downoad azure artifacts
   include_role:
     name: common
