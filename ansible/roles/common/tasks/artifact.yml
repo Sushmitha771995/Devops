@@ -9,4 +9,4 @@
     state: present
 
 - name: install azure cli extension
-  shell: az-extension add --name azure-devops
+  shell: az extension add --name azure-devops
