@@ -1,0 +1,4 @@
+- name: cpy Az repo file
+  copy:
+    src: az-cli.repo
+    dest: /etc/yum.repos.d/az-cli.repo
