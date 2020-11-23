@@ -22,21 +22,19 @@
     - name: grab version fro pre-prod
       shell: curl -s https://feeds.dev.azure.com/sushmitha771995/roboshop/_apis/packaging/Feeds/roboshop/Packages/84230122-2433-403a-ba1e-d9f7e79fbdf6/versions?api-version=6.1-preview.1 | jq '.value[] | .version+ " " +.views[].name' | grep PreRelease | head -1 | xargs | awk  '{print $1}'
       register: version_qa
-
-
     - name: set version for dev
       set_fact:
-        version: "{{ version_dev.stdout}}"
+        version: "{{ version_dev.stdout }}"
   when ENV == "dev"
-- name: grab the env and set the version for dev
+
+- name: grab the env and set the version for qa
   block:
     - name: grab version for prod
       shell: curl -s https://feeds.dev.azure.com/sushmitha771995/roboshop/_apis/packaging/Feeds/roboshop/Packages/84230122-2433-403a-ba1e-d9f7e79fbdf6/versions?api-version=6.1-preview.1 | jq '.value[] | .version+ " " +.views[].name' | grep PreRelease | head -1 | xargs | awk  '{print $1}'
       register: version_qa
-
     - name: set version for qa
       set_fact:
-        version: "{{ version_qa.stdout}}"
+        version: "{{ version_qa.stdout }}"
   when ENV == "qa"
 
 - name: grab the env and set the version for
@@ -47,7 +45,7 @@
 
     - name: set version for dev
       set_fact:
-       version: "{{ version_prod.stdout}}"
+       version: "{{ version_prod.stdout  }}"
   when ENV == "prod"
 
 - name: Download azure artifacts , verison = {{version.stdout}}
