@@ -10,7 +10,7 @@
 
 - name: create htdoc directory
   file:
-    path: usr/share/nginx/html
+    path: /usr/share/nginx/html
     state: directory
 
 - name: downoad azure artifacts
