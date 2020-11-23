@@ -17,6 +17,8 @@
 - name: grab latest version
   shell: curl -s https://feeds.dev.azure.com/sushmitha771995/roboshop/_apis/packaging/Feeds/roboshop/Packages/84230122-2433-403a-ba1e-d9f7e79fbdf6/versions?api-version=6.1-preview.1 | jq '.value[] | .version+ " " +.views[].name' | grep Local | head -1 | args | awk  '{print $1}'
   register: version
+  debug:
+    msg: echo "{{version}}"
 
 - name: Download azure artifacts , verison = {{version.stdout}}
   shell: az artifacts universal download \
