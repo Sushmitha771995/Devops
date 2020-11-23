@@ -1,0 +1,11 @@
+{
+  "Comment": "DNS Record",
+  "Changes": [{
+    "Action": "UPSERT",
+    "ResourceRecordSet": {
+      "Name": "DNS_NAME-dev.firstdevops.internal",
+      "Type": "A",
+      "TTL": 300,
+      "ResourceRecords": [{ "Value": "IPADDRESS"}]
+    }}]
+}
