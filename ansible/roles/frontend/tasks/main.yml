@@ -3,7 +3,7 @@
     name: nginx
     state: present
 
--name: remove old docs
+- name: remove old docs
   file:
     path: /usr/share/nginx/html
     state: absent
