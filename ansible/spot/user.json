@@ -1,0 +1,57 @@
+{
+  "IamFleetRole": "arn:aws:iam::441827412228:role/aws-ec2-spot-fleet-tagging-role",
+  "AllocationStrategy": "capacityOptimized",
+  "TargetCapacity": 1,
+  "SpotPrice": "0.0104",
+  "ValidFrom": "2020-11-23T15:32:14Z",
+  "ValidUntil": "2021-11-23T15:32:14Z",
+  "TerminateInstancesWithExpiration": true,
+  "LaunchSpecifications": [
+    {
+      "ImageId": "ami-052ed3344670027b3",
+      "InstanceType": "t3.micro",
+      "SubnetId": "subnet-0ab8ab8ef604a252a",
+      "KeyName": "first-key-pair",
+      "SpotPrice": "0.0104",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": true,
+            "VolumeType": "gp2",
+            "VolumeSize": 16,
+            "SnapshotId": "snap-00478bbd380c891ed"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-051a1a9ee8b28c04f"
+        }
+      ],
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "name",
+              "Value": "user"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "request",
+  "TagSpecifications": [
+    {
+      "ResourceType": "spot-fleet-request",
+      "Tags": [
+        {
+          "Key": "name",
+          "Value": "user"
+        }
+      ]
+    }
+  ]
+}
