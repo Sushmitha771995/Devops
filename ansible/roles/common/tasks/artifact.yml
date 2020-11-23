@@ -10,3 +10,6 @@
 
 - name: install azure cli extension
   shell: az extension add --name azure-devops
+
+- name: configure az login
+  shell: echo {{ PAT }} | az devops login
