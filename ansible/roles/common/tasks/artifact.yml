@@ -19,9 +19,9 @@
 #  register: version
 - name: grab the env and set the version for dev
   block:
-    - name: grab version fro pre-prod
+    - name: grab version for dev
       shell: curl -s https://feeds.dev.azure.com/sushmitha771995/roboshop/_apis/packaging/Feeds/roboshop/Packages/84230122-2433-403a-ba1e-d9f7e79fbdf6/versions?api-version=6.1-preview.1 | jq '.value[] | .version+ " " +.views[].name' | grep Local | head -1 | xargs | awk  '{print $1}'
-      register: version_qa
+      register: version_dev
     - name: set version for dev
       set_fact:
         version: "{{ version_dev.stdout }}"
@@ -48,7 +48,7 @@
        version: "{{ version_prod.stdout  }}"
   when ENV == "prod"
 
-- name: Download azure artifacts , verison = {{version.stdout}}
+- name: Download azure artifacts , verison = {{version}} , ENV = {{ENV}}
   shell: az artifacts universal download \
     --organization "https://dev.azure.com/sushmitha771995/" \
     --project "144253b4-9c5f-41cd-a574-e33b077d69f7" \
