@@ -5,4 +5,6 @@
     - name: import frontend Role
       import_role:
         name: frontend
-      when: componenet == "frontend"
+      when: component == "frontend"
+      tags:
+        - frontend
