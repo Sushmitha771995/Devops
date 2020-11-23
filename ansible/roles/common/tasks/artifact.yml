@@ -27,7 +27,6 @@
     - name: set version for dev
       set_fact:
         version: "{{ version_dev.stdout}}"
-
   when ENV == "dev"
 - name: grab the env and set the version for dev
   block:
@@ -48,7 +47,7 @@
 
     - name: set version for dev
       set_fact:
-      version: "{{ version_prod.stdout}}"
+       version: "{{ version_prod.stdout}}"
   when ENV == "prod"
 
 - name: Download azure artifacts , verison = {{version.stdout}}
