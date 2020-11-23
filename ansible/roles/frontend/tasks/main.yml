@@ -22,7 +22,3 @@
     state: started
     name: nginx
 
-- name: downoad azure artifacts
-  include_role:
-    name: common
-    tasks_from: artifact.yml
