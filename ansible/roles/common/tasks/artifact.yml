@@ -30,17 +30,17 @@
 - name: grab the env and set the version for qa
   block:
     - name: grab version for prod
-      shell: curl -s https://feeds.dev.azure.com/sushmitha771995/roboshop/_apis/packaging/Feeds/roboshop/Packages/{{COMPONENT_ID}}/versions?api-version=6.1-preview.1 | jq '.value[] | .version+ " " +.views[].name' | grep PreRelease | head -1 | xargs | awk  '{print $1}'
+      shell: curl -s https://feeds.dev.azure.com/sushmitha771995/roboshop/_apis/packaging/Feeds/roboshop/Packages/{{ COMPONENT_ID }}/versions?api-version=6.1-preview.1 | jq '.value[] | .version+ " " +.views[].name' | grep PreRelease | head -1 | xargs | awk  '{print $1}'
       register: version_qa
     - name: set version for qa
       set_fact:
         version: "{{ version_qa.stdout }}"
   when: ENV == "qa"
 
-- name: grab the env and set the version for
+- name: grab the env and set the version for prod
   block:
     - name: grp version for prod
-      shell: curl -s https://feeds.dev.azure.com/sushmitha771995/roboshop/_apis/packaging/Feeds/roboshop/Packages/{{COMPONENT_ID}}/versions?api-version=6.1-preview.1 | jq '.value[] | .version+ " " +.views[].name' | grep Release | head -1 | xargs | awk  '{print $1}'
+      shell: curl -s https://feeds.dev.azure.com/sushmitha771995/roboshop/_apis/packaging/Feeds/roboshop/Packages/{{ COMPONENT_ID }}/versions?api-version=6.1-preview.1 | jq '.value[] | .version+ " " +.views[].name' | grep Release | head -1 | xargs | awk  '{print $1}'
       register: version_prod
 
     - name: set version for dev
