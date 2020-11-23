@@ -25,7 +25,7 @@
     --scope project \
     --feed "roboshop" \
     --name "cart" \
-    --version {{ version.stdout }} \
+    --version "0.0.1" \
     --path .
   args:
     chdir: /tmp
