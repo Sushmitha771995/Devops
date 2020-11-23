@@ -15,7 +15,7 @@
   vars:
     ARTIFACT_PATH: /usr/share/nginx
     COMPONENT: frontend
-
+    COMPONENT_ID: 60ee6a91-e102-4c5e-87a1-f41c517c4bd7
 - name: start nginx service
   systemd:
     state: started
