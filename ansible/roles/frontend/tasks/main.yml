@@ -1,3 +1,26 @@
+- name: download nginx
+  yum:
+    name: nginx
+    state: present
+
+-name: remove old docs
+  file:
+    path: /usr/share/nginx/html
+    state: absent
+
+- name: downoad azure artifacts
+  include_role:
+    name: common
+    tasks_from: artifact.yml
+  vars:
+    ARTIFACT_PATH: /usr/share/nginx
+    COMPONENT: frontend
+
+- name: start nginx service
+  systemd:
+    state: started
+    name: nginx
+
 - name: downoad azure artifacts
   include_role:
     name: common

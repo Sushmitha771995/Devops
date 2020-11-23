@@ -54,8 +54,8 @@
     --project "144253b4-9c5f-41cd-a574-e33b077d69f7" \
     --scope project \
     --feed "roboshop" \
-    --name "cart" \
+    --name "{{COMPONENT}}" \
     --version "{{version}}" \
     --path .
   args:
-    chdir: /tmp
+    chdir: "{{ARTIFACT_PATH}}"
