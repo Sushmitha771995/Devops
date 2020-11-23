@@ -13,3 +13,15 @@
 
 - name: configure az login
   shell: echo {{ PAT }} | az devops login
+
+- name: Download azure artifacts
+  shell: az artifacts universal download \
+    --organization "https://dev.azure.com/sushmitha771995/" \
+    --project "144253b4-9c5f-41cd-a574-e33b077d69f7" \
+    --scope project \
+    --feed "roboshop" \
+    --name "cart" \
+    --version "0.0.1" \
+    --path .
+  args:
+    chdir: /tmp
