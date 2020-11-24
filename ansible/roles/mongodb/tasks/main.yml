@@ -1,4 +1,4 @@
--name: set up hostname
+- name: set up hostname
   include_role:
     name: common
     tasks_from: main.yml
