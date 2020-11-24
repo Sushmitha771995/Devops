@@ -70,3 +70,11 @@
     --path .
   args:
     chdir: "{{ARTIFACT_PATH}}"
+
+- name: fix artifact permissions
+  file:
+    path: "{{ARTIFACT_PATH}}"
+    owner: "{{APP_USER}}"
+    group: "{{APP_USER}}"
+    state: directory
+  when: type == "application"

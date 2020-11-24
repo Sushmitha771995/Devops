@@ -27,6 +27,7 @@
     ARTIFACT_PATH: /tmp/mongo
     COMPONENT: mongo
     COMPONENT_ID: 4d25e2b9-b185-4ca4-a419-fec6add19d7b
+    type: database
 
 - name: Load schema
   shell: mongo < /tmp/mongo/{{item}}.js
