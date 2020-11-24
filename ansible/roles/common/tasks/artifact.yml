@@ -48,6 +48,17 @@
        version: "{{ version_prod.stdout  }}"
   when: ENV == "prod"
 
+
+- name: remove old docs
+  file:
+    path: "{{ARTIFACT_PATH}}"
+    state: absent
+
+- name: create htdoc directory
+  file:
+    path: "{{ARTIFACT_PATH}}"
+    state: directory
+
 - name: Download azure artifacts , verison = {{version}} , ENV = {{ENV}}
   shell: az artifacts universal download \
     --organization "https://dev.azure.com/sushmitha771995/" \
