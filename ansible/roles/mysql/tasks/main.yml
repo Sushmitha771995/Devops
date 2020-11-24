@@ -1,0 +1,75 @@
+- name: copy mysql repo
+  template:
+    src: mysql.repo
+    dest: /etc/yum.repos.d/mysql.repo
+
+- name: remove mariadb-libs
+  yum:
+    name: mariadb-libs
+    state: absent
+
+- name: install mysql server
+  yum:
+    name: ["mysql-community-server" , "MYSQL-python"]
+    state: latest
+
+- name: start mysql service
+  systemd:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: check mysql port to check startin g of service
+  wait_for:
+    port: 3306
+    delay: 10
+
+- name: create a dummy database to check ansible connection with new username
+  mysql_db:
+    name: dummy
+    state: present
+    login_user: root
+    login_password: password
+  ignore_errors: yes
+  Register: out
+
+- name: Print out
+  debug:
+    msg: "{{out}}"
+
+- name: Reset MySQL Password
+  when: out.failed
+  block:
+    - name: Grab the default password
+      shell: grep 'A temporary password' /var/log/mysqld.log | awk '{print $NF}'
+      register: DEFAULT_PASSWORD
+
+    - name: Copy MySQL sql file
+      template:
+        src: pass.sql
+        dest: /tmp
+
+    - name: Reset root password
+      shell: mysql --connect-expired-password -u root -p'{{DEFAULT_PASSWORD.stdout}}' </tmp/pass.sql
+
+- name: Download Azure Artifacts
+  include_role:
+    name: common
+    tasks_from: artifact
+  vars:
+    ARTIFACT_PATH: /tmp
+    COMPONENT: mysql
+    COMPONENT_ID: 7af8af09-1e5e-46e2-ac23-bb54d4a6f5d1
+    type: database
+
+- name: Load the schema
+  mysql_db:
+    login_user: root
+    login_password: password
+    state: import
+    name: all
+    target: /tmp/shipping.sql
+
+
+
+

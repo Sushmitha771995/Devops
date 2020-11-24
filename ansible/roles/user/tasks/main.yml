@@ -13,12 +13,12 @@
     tasks_from: artifact.yml
   vars:
     ARTIFACT_PATH: /home/{{APP_USER}}/{{component}}
-    COMPONENT: catalogue
-    COMPONENT_ID: bfeffce2-f73e-47cb-8bf6-1647d981820a
+    COMPONENT: user
+    COMPONENT_ID: 51a23779-20c4-4b39-94c8-803124e3ac2c
     type: application
 
-- name: start catalogue service
+- name: start user service
   systemd:
-    name: catalogue
+    name: user
     state: restarted
     enabled: yes

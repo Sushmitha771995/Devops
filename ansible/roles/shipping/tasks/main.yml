@@ -1,0 +1,30 @@
+- name: Add Application user
+  user:
+    name: "{{ APP_USER }}"
+
+- name: Install Java
+  yum:
+    name: java
+    state: present
+
+- name: Download Azure Artifacts
+  include_role:
+    name: common
+    tasks_from: artifact
+  vars:
+    ARTIFACT_PATH: /home/{{APP_USER}}/{{component}}
+    COMPONENT: shipping
+    COMPONENT_ID: c56db378-3512-40fb-85bd-ad30c8216789
+    type: application
+
+- name: Setup SystemD Service for Shipping
+  template:
+    src: systemd.service
+    dest: /etc/systemd/system/shipping.service
+
+- name: Start User Service
+  systemd:
+    name: shipping
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

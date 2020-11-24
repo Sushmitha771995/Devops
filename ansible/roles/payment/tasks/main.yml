@@ -1,0 +1,36 @@
+- name: Add Application user
+  user:
+    name: "{{ APP_USER }}"
+
+- name: Install Python3
+  yum:
+    name: ["python36", "gcc", "python3-devel"]
+    state: present
+
+- name: Download Azure Artifacts
+  include_role:
+    name: common
+    tasks_from: artifact
+  vars:
+    ARTIFACT_PATH: /home/{{APP_USER}}/{{component}}
+    COMPONENT: payment
+    COMPONENT_ID: 80ac9d89-d7c0-43c0-9fe5-29eae1836fff
+    type: application
+
+
+- name: Install Payment Dependencies
+  pip:
+    requirements: /home/{{APP_USER}}/{{component}}/requirements.txt
+    executable: pip3
+
+- name: Setup SystemD Service for Payment
+  template:
+    src: systemd.service
+    dest: /etc/systemd/system/payment.service
+
+- name: Start Payment Service
+  systemd:
+    name: payment
+    state: restarted
+    enabled: yes
+    daemon-reload: yes

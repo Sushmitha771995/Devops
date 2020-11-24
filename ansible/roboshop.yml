@@ -3,6 +3,7 @@
   become: yes
   vars:
     APP_USER: roboshop
+    DOMAIN: firstdevops.tk
   tasks:
     - name: import frontend Role
       import_role:
@@ -22,3 +23,27 @@
       when: component == "catalogue"
       tags:
         - catalogue
+    - name: import redis Role
+        import_role:
+          name: redis
+        when: component == "redis"
+        tags:
+          - redis
+    - name: import user Role
+        import_role:
+          name: user
+        when: component == "user"
+        tags:
+          - user
+    - name: import cart Role
+        import_role:
+          name: cart
+        when: component == "cart"
+        tags:
+          - cart
+    - name: import mysql Role
+        import_role:
+          name: mysql
+        when: component == "mysql"
+        tags:
+          - mysql

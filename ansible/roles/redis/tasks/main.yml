@@ -1,0 +1,23 @@
+- name: set up yum repors for redis
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y
+    state: present
+
+- name: install redis
+  yum:
+    name: redis
+    state: latest
+    enablerepo: remi
+
+- name: update mongodb configuration file- network adress
+  replace:
+    path: /etc/redis.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+
+- name: start redis service
+  systemd:
+    service: redis
+    state: started
+    enabled: yes
+
