@@ -25,7 +25,7 @@
      tasks_from: artifact.yml
   vars:
     ARTIFACT_PATH: /tmp
-    COMPONENT: mongodb
+    COMPONENT: mongo
     COMPONENT_ID: 4d25e2b9-b185-4ca4-a419-fec6add19d7b
 
 - name: Load schema
