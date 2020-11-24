@@ -1,0 +1,41 @@
+-name: set up hostname
+  include_role:
+    name: common
+    tasks_from: main.yml
+
+- name: download mongodb repo
+  file:
+    src: mongodb.repo
+    dest: /etc/yum.repos.d/mongodb.repo
+
+- name: mongodb download
+  yum:
+    name: mongodb-org
+    state: present
+
+- name: update mongodb configuration file- network adress
+  replace:
+    path: /etc/mongod.conf
+    regexp: '120.0.0.1'
+    replace: '0.0.0.0'
+
+- name: downoad azure artifacts
+  include_role:
+     name: common
+     tasks_from: artifact.yml
+  vars:
+    ARTIFACT_PATH: /tmp
+    COMPONENT: mongodb
+    COMPONENT_ID: 4d25e2b9-b185-4ca4-a419-fec6add19d7b
+
+- name: Load schema
+  shell: mongo < /tmp/{{item}}.js
+  loop:
+    catalogue
+    users
+
+  - name: start mongodb service
+  systemd:
+    name: mongod
+    state: started
+    enabled: yes

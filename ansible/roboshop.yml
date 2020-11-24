@@ -8,3 +8,9 @@
       when: component == "frontend"
       tags:
         - frontend
+    - name: import mongodb Role
+        import_role:
+          name: mongodb
+        when: component == "mongodb"
+        tags:
+          - mongodb
