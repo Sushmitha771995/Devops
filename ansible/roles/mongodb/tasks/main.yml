@@ -16,7 +16,7 @@
 - name: update mongodb configuration file- network adress
   replace:
     path: /etc/mongod.conf
-    regexp: '120.0.0.1'
+    regexp: '127.0.0.1'
     replace: '0.0.0.0'
 
 - name: downoad azure artifacts
