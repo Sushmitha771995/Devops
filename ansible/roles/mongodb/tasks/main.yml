@@ -31,8 +31,8 @@
 - name: Load schema
   shell: mongo < /tmp/{{item}}.js
   loop:
-    catalogue
-    users
+    - catalogue
+    - users
 
 - name: start mongodb service
   systemd:
