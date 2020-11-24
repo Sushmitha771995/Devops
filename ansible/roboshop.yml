@@ -16,7 +16,7 @@
       when: component == "mongodb"
       tags:
         - mongodb
-- name: import catalogue Role
+    - name: import catalogue Role
       import_role:
         name: catalogue
       when: component == "catalogue"
