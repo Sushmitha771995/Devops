@@ -12,7 +12,7 @@
         - frontend
     - name: import mongodb Role
       import_role:
-          name: mongodb
+        name: mongodb
       when: component == "mongodb"
       tags:
         - mongodb
