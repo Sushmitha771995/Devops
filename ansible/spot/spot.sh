@@ -6,3 +6,4 @@ fi
 
 
 aws ec2 request-spot-fleet --spot-fleet-request-config file://$1
+aws ec2 describe-tags  --filters "Name=name,Values=s$1"
