@@ -14,4 +14,4 @@
   vars:
     ARTIFACT_PATH: /home/{{APP_USER}}/{{component}}
     COMPONENT: catalogue
-    COMPONENT_ID: 4d25e2b9-b185-4ca4-a419-fec6add19d7b
+    COMPONENT_ID: bfeffce2-f73e-47cb-8bf6-1647d981820a
