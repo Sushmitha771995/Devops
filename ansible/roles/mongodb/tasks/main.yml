@@ -34,7 +34,7 @@
     catalogue
     users
 
-  - name: start mongodb service
+- name: start mongodb service
   systemd:
     name: mongod
     state: started
