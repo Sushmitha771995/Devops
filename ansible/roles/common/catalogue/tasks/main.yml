@@ -1,0 +1,17 @@
+- name: instal node js
+  yum:
+    name: node-js
+    state: present
+
+- name: add application
+  user:
+    name: "{{ APP_USER }}"
+
+- name: downoad azure artifacts
+  include_role:
+    name: common
+    tasks_from: artifact.yml
+  vars:
+    ARTIFACT_PATH: /home/{{APP_USER}}/{{component}}
+    COMPONENT: catalogue
+    COMPONENT_ID: 4d25e2b9-b185-4ca4-a419-fec6add19d7b

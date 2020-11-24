@@ -1,6 +1,8 @@
 - name: roboshop
   hosts: all
   become: yes
+  vars:
+    APP_USER: roboshop
   tasks:
     - name: import frontend Role
       import_role:
@@ -14,3 +16,9 @@
       when: component == "mongodb"
       tags:
         - mongodb
+- name: import catalogue Role
+      import_role:
+        name: cataogue
+      when: component == "catalogue"
+      tags:
+        - catalogue
