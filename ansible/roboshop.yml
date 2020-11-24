@@ -18,7 +18,7 @@
         - mongodb
 - name: import catalogue Role
       import_role:
-        name: cataogue
+        name: catalogue
       when: component == "catalogue"
       tags:
         - catalogue
