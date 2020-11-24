@@ -1,6 +1,6 @@
 - name: instal node js
   yum:
-    name: node-js
+    name: nodejs
     state: present
 
 - name: add application
