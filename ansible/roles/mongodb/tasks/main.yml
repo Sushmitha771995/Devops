@@ -24,12 +24,12 @@
      name: common
      tasks_from: artifact.yml
   vars:
-    ARTIFACT_PATH: /tmp
+    ARTIFACT_PATH: /tmp/mongo
     COMPONENT: mongo
     COMPONENT_ID: 4d25e2b9-b185-4ca4-a419-fec6add19d7b
 
 - name: Load schema
-  shell: mongo < /tmp/{{item}}.js
+  shell: mongo < /tmp/mongo/{{item}}.js
   loop:
     - catalogue
     - users
