@@ -19,6 +19,12 @@
     regexp: '127.0.0.1'
     replace: '0.0.0.0'
 
+- name: Start MongoDB Service
+  systemd:
+    name: mongod
+    state: started
+    enabled: yes
+
 - name: downoad azure artifacts
   include_role:
      name: common
