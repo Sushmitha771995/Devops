@@ -54,14 +54,14 @@
       tags:
           - rabbitmq
     - name: import payment Role
-        import_role:
+      import_role:
           name: payment
       when: component == "payment"
       tags:
           - payment
           -
     - name: import shipping Role
-        import_role:
+      import_role:
           name: shipping
       when: component == "shipping"
       tags:
