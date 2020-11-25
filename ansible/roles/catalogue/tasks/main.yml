@@ -17,6 +17,11 @@
     COMPONENT_ID: bfeffce2-f73e-47cb-8bf6-1647d981820a
     type: application
 
+- name: Setup SystemD Service for Catalogue
+  template:
+    src: systemd.service
+    dest: /etc/systemd/system/catalogue.service
+
 - name: start catalogue service
   systemd:
     name: catalogue
