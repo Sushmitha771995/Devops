@@ -31,7 +31,7 @@
     login_user: root
     login_password: password
   ignore_errors: yes
-  Register: out
+  register: out
 
 - name: Print out
   debug:
