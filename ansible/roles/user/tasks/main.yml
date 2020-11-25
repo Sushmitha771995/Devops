@@ -17,6 +17,11 @@
     COMPONENT_ID: 51a23779-20c4-4b39-94c8-803124e3ac2c
     type: application
 
+- name: Setup SystemD Service for User
+  template:
+    src: systemd.service
+    dest: /etc/systemd/system/user.service
+
 - name: start user service
   systemd:
     name: user
