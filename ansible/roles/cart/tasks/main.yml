@@ -17,6 +17,11 @@
     COMPONENT_ID: 84230122-2433-403a-ba1e-d9f7e79fbdf6
     type: application
 
+- name: Setup SystemD Service for Cart
+  template:
+    src: systemd.service
+    dest: /etc/systemd/system/cart.service
+
 - name: start cart service
   systemd:
     name: cart
