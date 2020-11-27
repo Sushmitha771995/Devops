@@ -10,7 +10,7 @@
 
 - name: install mysql server
   yum:
-    name: ["mysql-community-server" , "MYSQL-python"]
+    name: ["mysql-community-server" , "MySQL-python"]
     state: latest
 
 - name: start mysql service
