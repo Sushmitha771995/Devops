@@ -1,1 +1,1 @@
-#sample = "heyheyyy sushmitha"
+sample = "heyheyyy sushmitha"
