@@ -1,4 +1,5 @@
 variable "sample123" {
+  default = "heyheyyyy"
 }
 
 output "sample123" {
