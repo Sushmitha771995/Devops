@@ -1,5 +1,5 @@
 variable "sample123" {
-  default = "heyheyyyy"
+  default = var.sample
 }
 
 output "sample123" {
