@@ -19,9 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e711a53f-f633-483c-935a-23f8a2e39695" name="Default Changelist" comment="yes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e711a53f-f633-483c-935a-23f8a2e39695" name="Default Changelist" comment="yes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,7 +67,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607235749294</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="yes">
+      <created>1607235901415</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1607235901415</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -97,10 +102,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="464" y="238" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1607235072029" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1607235751618">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1607235903871">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1607235751618" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1607235903871" />
     <state x="327" y="0" key="new project wizard" timestamp="1607234408052">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
