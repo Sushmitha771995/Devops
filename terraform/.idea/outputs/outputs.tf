@@ -1,7 +1,7 @@
 output "sample" {
  value = "Hello world"
 }
-output "" {
+output "test" {
  value = "hey"
 }
 
