@@ -1,6 +1,6 @@
-variable "sample123" {
-  default = var.sample
-}
+#variable "sample123" {
+#  default = var.sample
+# }
 
 output "sample" {
   value = var.sample
