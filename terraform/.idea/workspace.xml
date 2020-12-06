@@ -109,7 +109,21 @@
       <option name="project" value="LOCAL" />
       <updated>1607236913316</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="yes">
+      <created>1607237066547</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1607237066547</updated>
+    </task>
+    <task id="LOCAL-00010" summary="yes">
+      <created>1607237196479</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1607237196479</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -137,10 +151,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="464" y="238" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1607235072029" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1607236926735">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1607237198931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1607236926735" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1607237198931" />
     <state x="327" y="0" key="new project wizard" timestamp="1607234408052">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
