@@ -1,4 +1,5 @@
-#variable "sample123" {
+variable "sample" {
+}
 #  default = var.sample
 # }
 
