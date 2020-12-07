@@ -1,10 +1,10 @@
-terraform {
-  backend "s3" {
-   bucket = "s3-terraform123"
-   key = "sample/terraform.tfstate"
-   region = "us-east-1"
- }
-}
+  terraform {
+    backend "s3" {
+      bucket = "mybucket4321"
+      key    = "statesample/terraform.tf"
+      region = "us-east-1"
+    }
+  }
 
 provider "aws" {
   region = "us-east-1"
