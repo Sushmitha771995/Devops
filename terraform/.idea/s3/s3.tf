@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "storage" {
-  bucket = "s3-terraform "
+  bucket = "s3-terraform"
 #  key = "sample/teraform.tfstate"
   region = "us-east-1"
 }
