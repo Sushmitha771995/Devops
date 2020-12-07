@@ -8,5 +8,5 @@ resource "aws_instance" "myinstance" {
   instance_type = "t2.micro"
   }
 output "public_ip" {
-  value = "aws_instance.myinstance.public_ip"
+  value = aws_instance.myinstance.public_ip
 }
